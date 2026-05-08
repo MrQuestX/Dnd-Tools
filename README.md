@@ -40,3 +40,35 @@ No installation needed. Works offline after first load.
 ---
 
 ## 📂 Project Structure
+Dnd-Tools/
+├── index.html          # Main app (Mr.Quest's Rollpad)
+├── Rollpad.html        # Backup / alternative entry
+├── Oracle.json         # (optional data file)
+├── td10-wag-complete.json
+└── README.md
+
+
+---
+
+## 🚀 Future Ideas
+
+- Pre-loaded monster library (5e SRD)
+- Initiative tracker
+- Condition / status markers
+- Better mobile support
+- Dark mode
+- More dice visuals
+
+Contributions and suggestions welcome!
+
+---
+
+## 📜 License
+
+This project is open source. Feel free to use, modify, and share it for your D&D games.
+
+Made with ❤️ for the TTRPG community by **Mr.QuestX**
+
+---
+
+**Star the repo** if this tool makes your DM life easier! ⭐
