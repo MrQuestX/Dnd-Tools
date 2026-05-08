@@ -5,6 +5,7 @@
 **Small but powerful browser-based tools for Dungeons & Dragons.**
 
 **Live Tool:** [Mr.Quest's Rollpad](https://mrquestx.github.io/Dnd-Tools/)
+mobile: Looks better in landscape.
 
 ---
 
