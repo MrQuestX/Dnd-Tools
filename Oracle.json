@@ -1,0 +1,180 @@
+{
+  "collections": [
+    {
+      "name": "Simple Solo Tables",
+      "formulas": [
+        {
+          "name": "Full Roll",
+          "dice": "1d10"
+        },
+        {
+          "name": "Half Roll",
+          "dice": "1d5"
+        },
+        {
+          "name": "Quarter Roll",
+          "dice": "1d3"
+        }
+      ]
+    }
+  ],
+  "customTables": [
+    {
+      "name": "Yes/No Oracle",
+      "sides": 6,
+      "entries": [
+        "No, and...",
+        "No",
+        "No, but...",
+        "Yes, but...",
+        "Yes",
+        "Yes, and..."
+      ]
+    },
+    {
+      "name": "Random Event / Twist",
+      "sides": 20,
+      "entries": [
+        "Something breaks or stops working",
+        "Something breaks or stops working",
+        "Unexpected arrival / visitor",
+        "Unexpected arrival / visitor",
+        "Environmental change (weather, light, sound)",
+        "Environmental change (weather, light, sound)",
+        "Old secret or rumor surfaces",
+        "Old secret or rumor surfaces",
+        "Betrayal or hidden motive revealed",
+        "Betrayal or hidden motive revealed",
+        "Helpful stranger or useful item found",
+        "Helpful stranger or useful item found",
+        "Chase or pursuit begins",
+        "Chase or pursuit begins",
+        "Discovery of something valuable",
+        "Discovery of something valuable",
+        "Physical danger / trap",
+        "Physical danger / trap",
+        "Major plot shift or new goal appears",
+        "Major plot shift or new goal appears"
+      ]
+    },
+    {
+      "name": "Complication / Setback",
+      "sides": 10,
+      "entries": [
+        "Makes noise / attracts attention",
+        "Costs extra time or resources",
+        "Injures you or damages gear",
+        "Creates a new enemy or rival",
+        "Reveals bad information",
+        "Ally or NPC is hurt / upset",
+        "Situation becomes more dangerous",
+        "Moral or emotional dilemma",
+        "Something you need is missing",
+        "Roll twice and combine"
+      ]
+    },
+    {
+      "name": "Location / Scene Descriptor",
+      "sides": 20,
+      "entries": [
+        "Dark / shadowy", "Dark / shadowy", "Dark / shadowy",
+        "Crowded / noisy", "Crowded / noisy", "Crowded / noisy",
+        "Abandoned / ruined", "Abandoned / ruined", "Abandoned / ruined",
+        "Peaceful / beautiful", "Peaceful / beautiful", "Peaceful / beautiful",
+        "Dangerous / unstable", "Dangerous / unstable", "Dangerous / unstable",
+        "Mysterious / ancient", "Mysterious / ancient",
+        "Unexpected contrast (beautiful but deadly)", "Unexpected contrast (beautiful but deadly)"
+      ]
+    },
+    {
+      "name": "Plot Hook / Goal Spark",
+      "sides": 12,
+      "entries": [
+        "Find a lost person or object",
+        "Deliver a dangerous message",
+        "Investigate a strange occurrence",
+        "Escape or survive pursuit",
+        "Uncover a betrayal",
+        "Protect someone vulnerable",
+        "Retrieve a powerful item",
+        "Solve a murder or mystery",
+        "Explore a forbidden place",
+        "Make an important alliance",
+        "Destroy or neutralize a threat",
+        "Discover a hidden truth about yourself"
+      ]
+    },
+    {
+      "name": "Treasure / Reward",
+      "sides": 10,
+      "entries": [
+        "Useful tool or information",
+        "Useful tool or information",
+        "Small amount of currency / supplies",
+        "Small amount of currency / supplies",
+        "Healing or restorative item",
+        "Healing or restorative item",
+        "Weapon or armor upgrade",
+        "Valuable but awkward item",
+        "Clue or map to something bigger",
+        "Roll twice (or rare/powerful item)"
+      ]
+    },
+    {
+      "name": "Quick NPC - Appearance",
+      "sides": 6,
+      "entries": [
+        "Scarred",
+        "Elegant",
+        "Dirty",
+        "Nervous",
+        "Imposing",
+        "Unusual feature"
+      ]
+    },
+    {
+      "name": "Quick NPC - Personality",
+      "sides": 6,
+      "entries": [
+        "Friendly",
+        "Greedy",
+        "Suspicious",
+        "Helpful",
+        "Angry",
+        "Mysterious"
+      ]
+    },
+    {
+      "name": "Quick NPC - Motivation",
+      "sides": 6,
+      "entries": [
+        "Money",
+        "Revenge",
+        "Safety",
+        "Knowledge",
+        "Power",
+        "Love / Family"
+      ]
+    },
+    {
+      "name": "Meaning / Inspiration Oracle (Action + Theme)",
+      "sides": 100,
+      "entries": [
+        "Attack Power", "Defend Secret", "Discover Danger", "Pursue Ally",
+        "Betray Truth", "Create Chaos", "Escape Mystery", "Sacrifice Hope",
+        "Move Forward", "Hide Weakness", "Reveal Past", "Control Destiny",
+        "Break Barrier", "Build Alliance", "Lose Hope", "Gain Knowledge",
+        "Fight Authority", "Heal Wound", "Summon Help", "Banish Evil",
+        "Steal Secret", "Protect Home", "Destroy Artifact", "Restore Order",
+        "Follow Trail", "Ignore Warning", "Challenge Fate", "Embrace Change",
+        "Avoid Trap", "Spring Trap", "Unite Factions", "Divide Enemies",
+        "Search Ruins", "Guard Treasure", "Awaken Ancient", "Put to Rest",
+        "Negotiate Peace", "Declare War", "Cross Boundary", "Return Home",
+        "Face Fear", "Run Away", "Claim Power", "Give Up Power",
+        "Remember Lost", "Forget Pain", "Open Door", "Close Door",
+        "Light Dark", "Darken Light", "Speak Truth", "Keep Secret",
+        "Rise Up", "Fall Down", "Begin Quest", "End Chapter"
+      ]
+    }
+  ]
+}

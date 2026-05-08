@@ -1,0 +1,840 @@
+{
+  "collections": [
+    {
+      "name": "Tiny d10: Worldwide Adventure Generator",
+      "formulas": [
+        
+        {
+          "name": "Full Roll",
+          "dice": "1d10"
+        },
+        {
+          "name": "Half Roll",
+          "dice": "1d5"
+        },
+        {
+          "name": "Quarter Roll",
+          "dice": "1d3"
+        }
+      ]
+    }
+  ],
+  "customTables": [
+    {
+      "name": "Table A: Weather Conditions",
+      "sides": 10,
+      "entries": [
+        "Clear - Good visibility",
+        "Overcast - Flat light may reduce details at longer ranges",
+        "Fog or mist - Visibility reduced to as little as <= 1/4 mile",
+        "Windy - May affect ranged attacks or skills",
+        "Light rain/snow - May reduce visibility to as little as <= 1 mile",
+        "Heavy rain/snow - Travel speed reduced by half; visibility reduced to <= 1/4 mile",
+        "Thunderstorm/blizzard - Survival check required if unsheltered; possible environmental hazards; visibility reduced to 100 ft",
+        "Heatwave/cold snap - Inflicts a fatigue penalty (-1 Power or -1 Reflex)",
+        "Unnatural weather - Strange clouds, ash, colored rain, whispers on the wind, etc",
+        "Weather shift - Often occurs at the worst possible time"
+      ]
+    },
+    {
+      "name": "Table B: Hex Feature",
+      "sides": 10,
+      "entries": [
+        "Water - Spring, creek, lakelet, tidepool, cenote, seasonal pond",
+        "Elevation - Ridge, escarpment, sinkhole field, mesa, terraced hills",
+        "Vegetation zone - Ancient tree, dead grove, flower plain, reed marsh, thorn scrub",
+        "Stone formation - Hoodoos, basalt columns, granite tors, limestone karst, erratic boulders",
+        "Trackway - Natural trail, old road, game path, dried riverbed",
+        "Natural boundary - River divide, treeline edge, floodplain margin, dune line",
+        "Resource - Ore seam, salt lick, resin grove, peat, clay bank",
+        "Landform anomaly - Perfectly round hill, split ridge, sunken valley, leaning strata",
+        "Ancient imprint - Fossil bed, petrified forest, glacial striations, dried seabed",
+        "Climate feature - Wind corridor, frost hollow, heat sink, fog basin, lightning-prone rise"
+      ]
+    },
+    {
+      "name": "Table C: Signs & Omens",
+      "sides": 10,
+      "entries": [
+        "Distant smoke columns",
+        "Echoing horns or chanting originating from no clear source",
+        "Fresh tracks crossing the party's path",
+        "A sudden silence",
+        "A corpse (animal or person) with a clue",
+        "A messenger (wounded, terrified, lost, etc.)",
+        "A dropped item (map piece, charm, letter, tool, token, etc.)",
+        "A warning sign (runes, skulls, flag, taboo marker, etc.)",
+        "A suspicious guide mark (breadcrumbs into trouble)",
+        "A clear invitation to investigate (lit fire, fresh camp, open door, etc.)"
+      ]
+    },
+    {
+      "name": "Table D: Encounter Check",
+      "sides": 10,
+      "entries": [
+        "Low Intensity (20%) - Once per hex (or every 4 hours) - 1-in-5",
+        "Low Intensity (20%) - Once per hex (or every 4 hours) - 1-in-5",
+        "Low Intensity (20%) - Once per hex (or every 4 hours) - 1-in-5",
+        "Low Intensity (20%) - Once per hex (or every 4 hours) - 1-in-5",
+        "Low Intensity (20%) - Once per hex (or every 4 hours) - 1-in-5",
+        "Standard Intensity (30%) - Once per hex (or every 2 hours) - 1-in-3",
+        "Standard Intensity (30%) - Once per hex (or every 2 hours) - 1-in-3",
+        "Standard Intensity (30%) - Once per hex (or every 2 hours) - 1-in-3",
+        "High Intensity (50%) - Twice per hex (or every 1 hour) - 1-in-2",
+        "High Intensity (50%) - Twice per hex (or every 1 hour) - 1-in-2"
+      ]
+    },
+    {
+      "name": "Table E: Encounter Type",
+      "sides": 10,
+      "entries": [
+        "Predator or territorial beast - Use Fantasy Monsters, Appendix A",
+        "Predator or territorial beast - Use Fantasy Monsters, Appendix A",
+        "Prey animal herd or migration - Use Fantasy Monsters, Appendix A",
+        "Hazard - Terrain, weather, collapse, fire, thin ice, rip current, etc",
+        "Travelers - May want info, rumors, trade, directions, conflict, etc",
+        "Desperate folk - Fleeing, hungry, injured, lost, etc",
+        "Faction patrol - Questions, demands, tolls, recruiting, conscripting, etc",
+        "Monster or unnatural entity - Use Fantasy Monsters, Appendix A",
+        "Discovery encounter - Roll on Table F to determine discovery",
+        "Roll twice and combine results - E.g. desperate folk fleeing faction patrol's conscription"
+      ]
+    },
+    {
+      "name": "Table F: Discovery",
+      "sides": 10,
+      "entries": [
+        "Useful resource - Food, water, herbs, material, ores",
+        "Vantage point - Reveals 1-3 adjacent hex features under normal conditions",
+        "Site - Generate according to the procedure found in Settlements & Sites",
+        "Dungeon or underground entrance - Use Appendix III to generate a dungeon or underground structure",
+        "Lair - Generate according to the procedure found in Settlements & Sites",
+        "Settlement - Generate according to the procedure found in Settlements & Sites",
+        "Local knowledge - Warning from a local, a scrawled note, whisper on the wind",
+        "Weird phenomenon - Rocks roll uphill, sounds are delayed, fata morgana",
+        "Treasure (with strings attached) - Cursed, marked, bait, stolen",
+        "A solid lead - Roll Table H + Table I"
+      ]
+    },
+    {
+      "name": "Table G: Settlement Size",
+      "sides": 10,
+      "entries": [
+        "Lone homestead - One family",
+        "Camp - 1-3 families or 5-15 man crew",
+        "Hamlet - 20-80",
+        "Village - 80-300",
+        "Small town - 300-1,000",
+        "Town - 1,000-5,000",
+        "Fortified town or stronghold - 200-1,000",
+        "Pilgrimage site, monastery, or guildhouse - 5-50",
+        "Company town, mine, port, or outpost - 100-500",
+        "Hidden community (secret, nomadic, underground, etc.) - 20-200"
+      ]
+    },
+    {
+      "name": "Table H: Conflicts & Hooks",
+      "sides": 10,
+      "entries": [
+        "Someone is missing",
+        "Monster problem (sometimes not as it seems)",
+        "Faction pressure (conscription, 'protection' racket, taxes, etc.)",
+        "Resource crisis (water, food, fuel, medicine, etc.)",
+        "Curse, haunting, or strange dreams visit someone",
+        "Crime with consequences (theft, murder, sabotage, etc.)",
+        "Bad map, false guide, or a lie about the safe route",
+        "Natural disaster (sinkhole, rockslide, earthquake, etc.)",
+        "A bad deal was made (and now payment is due)",
+        "Someone is about to do something unwise (and should be stopped)"
+      ]
+    },
+    {
+      "name": "Table I: Site Type",
+      "sides": 10,
+      "entries": [
+        "Ruin (on the surface)",
+        "Tomb, barrow, or crypt",
+        "Cave system",
+        "Temple or shrine complex",
+        "Fortress or watchtower",
+        "Mine or quarry",
+        "Laboratory, 'wizard's study,' or odd workshop",
+        "Shipwreck, or otherwise abandoned vessel",
+        "Battlefield or mass grave",
+        "'Gateway,' anomalous area, or 'thin place'"
+      ]
+    },
+    {
+      "name": "Table J: Site Condition",
+      "sides": 10,
+      "entries": [
+        "Pristine and in-use",
+        "Maintained but tense (low resources, limited manpower, political turmoil, etc.)",
+        "Decaying but inhabited",
+        "Decaying but inhabited",
+        "Ruined and picked over (collapsed, flooded, overgrown, etc.)",
+        "Ruined and picked over (collapsed, flooded, overgrown, etc.)",
+        "Recently disturbed or uncovered (fresh digging, recent tracks, etc.)",
+        "Actively contested (by two or more groups)",
+        "Trapped or warded (the signs of which are most likely obvious)",
+        "Appears to be empty"
+      ]
+    },
+    {
+      "name": "Table K: Occupants & Opposition",
+      "sides": 10,
+      "entries": [
+        "No occupants—just hazards (see Appendix IV: Catalogue of Traps)",
+        "Vermin or animal infested",
+        "Bandits or scavengers",
+        "Cult, sect, or ritualists",
+        "Soldiers, guards, or mercenaries",
+        "Locals, defending it fiercely",
+        "Monster lair",
+        "Undead or ghosts",
+        "Rival adventurers",
+        "Powerful monster presence (or a lieutenant with reinforcements)"
+      ]
+    },
+    {
+      "name": "Table L: Rewards & Treasures",
+      "sides": 10,
+      "entries": [
+        "Supplies (food, tools, medicine, etc.)",
+        "Coin, gems, or other valuables",
+        "Trade goods (fine fabrics, preserved meats, salt, spices, etc.)",
+        "Relic (minor magical or otherwise strange object)",
+        "Armor, weapons, or otherwise combat-oriented items",
+        "Map to another site",
+        "Favor, title, safehouse, or protection from a local faction",
+        "Secret knowledge (enemy weakness, good travel route, ritual, etc.)",
+        "Key item (importance should be apparent, and it may be needed later)",
+        "Treasure that causes trouble (wanted, cursed, marked, stolen, etc.)"
+      ]
+    },
+    {
+      "name": "Embarking - Continent Roll",
+      "sides": 10,
+      "entries": [
+        "Re-roll",
+        "Re-roll",
+        "Africa",
+        "Asia",
+        "South America",
+        "Australia",
+        "Europe",
+        "North America",
+        "Party's choice",
+        "Game master's choice"
+      ]
+    },
+    {
+      "name": "Embarking - Region Roll",
+      "sides": 10,
+      "entries": [
+        "Random region",
+        "Random region",
+        "Random region",
+        "Random region",
+        "Random region",
+        "Random region",
+        "Random region",
+        "Random coastal region",
+        "Random coastal region",
+        "Random region with major geographical feature (river, mountain, etc.)"
+      ]
+    },
+    {
+      "name": "Embarking - Hex Roll",
+      "sides": 10,
+      "entries": [
+        "Random hex",
+        "Random hex",
+        "Random hex",
+        "Random hex",
+        "Random hex",
+        "Random hex",
+        "Random hex",
+        "Random hex",
+        "Random borderland hex",
+        "Hex near a notable feature (coast, mountain, river, etc.)"
+      ]
+    },
+    {
+      "name": "Appendix I: Quick Adventure Subroutine",
+      "sides": 10,
+      "entries": [
+        "Hook - Use Table H",
+        "Hook - Use Table H",
+        "Site - Use Table I",
+        "Site - Use Table I",
+        "Twist - Use Table J (or Table E: roll twice and combine)",
+        "Twist - Use Table J (or Table E: roll twice and combine)",
+        "Opposition - Use Table K",
+        "Opposition - Use Table K",
+        "Reward - Use Table L",
+        "Add a Timer - If not resolved by tomorrow/nightfall/3 days from now..."
+      ]
+    },
+    {
+      "name": "Appendix II: Plains, Steppe, and Savanna Encounters",
+      "sides": 10,
+      "entries": [
+        "Territorial predator",
+        "Territorial predator",
+        "Monster or other aberration",
+        "Monster or other aberration",
+        "Grass fire, slow (1-6) or fast (7-10) moving",
+        "Survivor(s) with a warning",
+        "Broken wagon or supply cache",
+        "Nomad camp; evil (1-2), neutral (3-8), or good (9-10)",
+        "Migrating herd (valuable, dangerous to spook)",
+        "Riders approaching at speed (1-4) or mounted scouts watching from afar (5-10)"
+      ]
+    },
+    {
+      "name": "Appendix II: Forests & Jungles Encounters",
+      "sides": 10,
+      "entries": [
+        "Predator stalking silently",
+        "Predator stalking silently",
+        "Monster or other aberration",
+        "Monster or other aberration",
+        "Monster or other aberration",
+        "Snare line or other primitive trap (see Appendix IV)",
+        "Old game path swallowed by roots",
+        "Hunting party (1-in-5 chance they are bandits in disguise)",
+        "Sudden terrain hazard (falling tree, hidden ravine, mudslide, etc.)",
+        "Territorial spirits or beast-gods"
+      ]
+    },
+    {
+      "name": "Appendix II: Hills & Mountains Encounters",
+      "sides": 10,
+      "entries": [
+        "Predators encircling the party",
+        "Predators encircling the party",
+        "Monster or other aberration",
+        "Monster or other aberration",
+        "Monster or other aberration",
+        "Mine entrance (1-in-3 chance of fresh prints at the entrance)",
+        "Avalanche or rockslide risk",
+        "Sudden change in the weather",
+        "Hermit, exile, or oracle (1-in-2 chance they will impart a prophecy)",
+        "Something is spotted in the distance"
+      ]
+    },
+    {
+      "name": "Appendix II: Deserts & Wastelands Encounters",
+      "sides": 10,
+      "entries": [
+        "Predator stalking from a distance",
+        "Monster or other aberration",
+        "Monster or other aberration",
+        "Mirage (mountains, oasis, marching army, etc.)",
+        "Scouts testing defenses",
+        "Scouts testing defenses",
+        "The sands shift unnaturally",
+        "Sinkhole into a subterranean structure",
+        "Sinkhole into a subterranean structure",
+        "The remains of a caravan, picked over (1-in-2 chance something valuable was left behind)"
+      ]
+    },
+    {
+      "name": "Appendix II: Swamps & Wetlands Encounters",
+      "sides": 10,
+      "entries": [
+        "Predator lurking beneath the water or within the dense trees",
+        "Predator lurking beneath the water or within the dense trees",
+        "Predator lurking beneath the water or within the dense trees",
+        "Monster or other aberration",
+        "Monster or other aberration",
+        "Monster or other aberration",
+        "Monster or other aberration",
+        "Swarm (leeches, insects, birds, etc.)",
+        "The still water stirs",
+        "Spirit lights"
+      ]
+    },
+    {
+      "name": "Appendix II: Encounter Tension or Complication",
+      "sides": 10,
+      "entries": [
+        "Terrain slows or complicates movement (mud, loose gravel, crumbling rock, collapsing ground, shifting sands, etc.)",
+        "Enemy reinforcements have nearly arrived",
+        "Weather or environmental conditions worsen",
+        "A third party is observing from concealment",
+        "The encounter site has a strategic advantage (high ground, choke point, cover, etc.)",
+        "A hidden hazard activates (trap, sinkhole, rockfall, swarm, etc.)",
+        "A natural resource is nearby, but is actively being contested by two or more groups",
+        "The party is in a territorial creature's domain",
+        "An omen occurs (potentially forcing a morale check)",
+        "Roll twice and combine results"
+      ]
+    },
+    {
+      "name": "Appendix III: Plains Terrain Generator",
+      "sides": 10,
+      "entries": [
+        "Plains",
+        "Plains",
+        "Plains",
+        "Plains",
+        "Plains",
+        "Forest",
+        "Hills",
+        "Dry Lands",
+        "Wetlands",
+        "Same as before, with notable geography"
+      ]
+    },
+    {
+      "name": "Appendix III: Forest Terrain Generator",
+      "sides": 10,
+      "entries": [
+        "Forest",
+        "Forest",
+        "Forest",
+        "Forest",
+        "Forest",
+        "Plains",
+        "Hills",
+        "Hills",
+        "Wetlands",
+        "Same as before, with notable geography"
+      ]
+    },
+    {
+      "name": "Appendix III: Hills Terrain Generator",
+      "sides": 10,
+      "entries": [
+        "Hills",
+        "Hills",
+        "Hills",
+        "Hills",
+        "Mountains",
+        "Mountains",
+        "Plains",
+        "Dry Lands",
+        "Forest",
+        "Same as before, with notable geography"
+      ]
+    },
+    {
+      "name": "Appendix III: Dry Lands Terrain Generator",
+      "sides": 10,
+      "entries": [
+        "Dry Lands",
+        "Dry Lands",
+        "Dry Lands",
+        "Dry Lands",
+        "Dry Lands",
+        "Plains",
+        "Hills",
+        "Hills",
+        "Mountains",
+        "Same as before, with notable geography"
+      ]
+    },
+    {
+      "name": "Appendix III: Wetlands Terrain Generator",
+      "sides": 10,
+      "entries": [
+        "Wetlands",
+        "Wetlands",
+        "Wetlands",
+        "Wetlands",
+        "Plains",
+        "Plains",
+        "Forest",
+        "Forest",
+        "Hills",
+        "Same as before, with notable geography"
+      ]
+    },
+    {
+      "name": "Appendix III: Mountains Terrain Generator",
+      "sides": 10,
+      "entries": [
+        "Mountains",
+        "Mountains",
+        "Mountains",
+        "Mountains",
+        "Hills",
+        "Hills",
+        "Forest",
+        "Dry Lands",
+        "Plains",
+        "Same as before, with notable geography"
+      ]
+    },
+    {
+      "name": "Appendix IV: Catalogue of Traps",
+      "sides": 10,
+      "entries": [
+        "Deadfall - T3-8; A weighted log, rock slab, or timber frame falls when triggered; inflicts 2-3 damage; target knocked prone",
+        "Hidden pit - T4-6; 10-30 ft. deep; may contain spikes; inflicts 1 damage per 10 ft. (or 1d5 + 5 damage if spiked)",
+        "Poison dart - T5-6; triggered by tripwire or pressure plate; inflicts 1-2 damage and -1 Power for 1d5 hours unless saved against",
+        "Snare - T4-8; target hoisted and restrained",
+        "Collapsing floor - T6; triggered by pressure in the middle of the trap; appx. 10 ft. radius; inflicts 1d5 damage",
+        "Gas vent - T7; invisible vapor fills a 15 ft. radius; inflicts 1-2 damage per round for 1d3-1d5 rounds",
+        "Alarm ward - T6; emits audible, magical, or visible signal; immediately triggers an Encounter, Encounter Tension, or advances the Faction Clock",
+        "Rolling boulder - T5; triggered by pressure plate or intrusion threshold in passage; inflicts 1d5 damage; those who fail save are pinned and take 1 damage per round until freed",
+        "Execution mechanism - T4-7; designed explicitly to kill (guillotine blade, crushing stone ceiling, impaling spikes, sudden drop into deep chasm, etc.); on failed save, the target is reduced to 0 HP immediately; on a successful save, the target suffers 1d5 + 5 damage",
+        "Warding sigil - T4-8; triggered by proximity, tampering, or entry; inflicts 1d5 damage and one of the following effects: 1. Fear; 2. Blindness; 3. Muteness; 4. Paralysis; 5. Marked"
+      ]
+    },
+    {
+      "name": "Appendix V: Dungeon Micro-engine - Step 1: Dungeon Size",
+      "sides": 10,
+      "entries": [
+        "Tiny - 3-5 areas",
+        "Tiny - 3-5 areas",
+        "Tiny - 3-5 areas",
+        "Small - 6-10 areas",
+        "Small - 6-10 areas",
+        "Small - 6-10 areas",
+        "Medium - 12-18 areas",
+        "Medium - 12-18 areas",
+        "Large - 20+ areas",
+        "Mega-site fragment - 50+ areas (often only partly accessible)"
+      ]
+    },
+    {
+      "name": "Appendix V: Step 2A - Doors",
+      "sides": 10,
+      "entries": [
+        "Standard door",
+        "Standard door",
+        "Barred or blocked door",
+        "Hidden or secret door",
+        "Locked door (T4-8)",
+        "Trapped door",
+        "No door",
+        "No door",
+        "Magical door",
+        "Sturdy locked door (T8-10; iron-bound, stone slab, etc.)"
+      ]
+    },
+    {
+      "name": "Appendix V: Step 2B - Passages",
+      "sides": 10,
+      "entries": [
+        "Straight passage (short)",
+        "Straight passage (long)",
+        "Straight passage (long)",
+        "Narrow passage or crawlspace",
+        "T-junction (one branch)",
+        "Cross-junction (2+ branches)",
+        "Curving or winding passage",
+        "Small chamber (minor room)",
+        "Dead end (may conceal something)",
+        "Large chamber (major room)"
+      ]
+    },
+    {
+      "name": "Appendix V: Step 2C - Rooms",
+      "sides": 10,
+      "entries": [
+        "Entry or transition",
+        "Guard or watch",
+        "Living space",
+        "Living space",
+        "Storage or cache",
+        "Ritual chamber, often housing an artifact or strange object",
+        "Collapsed or blocked",
+        "Shrine or symbol chamber",
+        "Boss or lieutenant space",
+        "Secret or hidden area"
+      ]
+    },
+    {
+      "name": "Appendix V: Step 2D - Obstacles",
+      "sides": 10,
+      "entries": [
+        "None",
+        "None",
+        "Locked or sealed",
+        "Trap (simple)",
+        "Trap (difficult)",
+        "Environmental hazard",
+        "Puzzle or mechanism",
+        "Time pressure",
+        "Cursed effect",
+        "Roll twice and combine results"
+      ]
+    },
+    {
+      "name": "Appendix V: Step 2E - Occupants",
+      "sides": 10,
+      "entries": [
+        "Empty",
+        "Empty",
+        "Vermin or minor threat",
+        "Vermin or minor threat",
+        "Patrol or guards",
+        "Patrol or guards",
+        "Elite or specialist",
+        "Monster encounter",
+        "Rival explorers/adventurers",
+        "Leader or lieutenant enemy"
+      ]
+    },
+    {
+      "name": "Appendix V: Step 2F - Loot",
+      "sides": 10,
+      "entries": [
+        "Nothing of use",
+        "Nothing of use",
+        "Nothing of use",
+        "Supplies",
+        "Supplies",
+        "Coin or trade goods",
+        "Weapon or armor",
+        "Artifact or relic",
+        "Map, key, or clue",
+        "Dangerous treasure"
+      ]
+    },
+    {
+      "name": "Appendix VII: Quick NPC Generator - Role",
+      "sides": 10,
+      "entries": [
+        "Scout",
+        "Priest",
+        "Criminal",
+        "Merchant",
+        "Exile",
+        "Soldier",
+        "Scholar",
+        "Fanatic",
+        "Child",
+        "Leader"
+      ]
+    },
+    {
+      "name": "Appendix VII: Quick NPC Generator - Motivation",
+      "sides": 10,
+      "entries": [
+        "Safety",
+        "Wealth",
+        "Revenge",
+        "Truth",
+        "Escape",
+        "Power",
+        "Reunion",
+        "Redemption",
+        "Survival",
+        "Control"
+      ]
+    },
+    {
+      "name": "Appendix VII: Quick NPC Generator - Complication",
+      "sides": 10,
+      "entries": [
+        "Deceitful",
+        "Doomed",
+        "Watched",
+        "Cursed",
+        "Indebted",
+        "Sick",
+        "Hunted",
+        "Ambitious",
+        "Fearful",
+        "Disloyal"
+      ]
+    },
+    {
+      "name": "Appendix VII: Quick Villain Generator - Archetype",
+      "sides": 10,
+      "entries": [
+        "Fallen noble",
+        "Cult leader",
+        "Bandit chief",
+        "Smuggler",
+        "Exiled scholar",
+        "Warlord",
+        "Corrupt official",
+        "Zealot",
+        "Reluctant heir",
+        "Masked figure"
+      ]
+    },
+    {
+      "name": "Appendix VII: Quick Villain Generator - Ambition",
+      "sides": 10,
+      "entries": [
+        "Restore lost status",
+        "Conquer a rival",
+        "Control territory",
+        "Gain wealth",
+        "Prove forbidden truth",
+        "Control trade",
+        "Summon or awaken something",
+        "Purify the region",
+        "Escape destiny",
+        "Rewrite the balance of power"
+      ]
+    },
+    {
+      "name": "Appendix VII: Quick Villain Generator - Method",
+      "sides": 10,
+      "entries": [
+        "Proxy agents",
+        "Ritual & secrecy",
+        "Manipulation",
+        "Political leverage",
+        "Military discipline",
+        "Experimentation",
+        "Bribery",
+        "Purges",
+        "Force & intimidation",
+        "Hidden influence"
+      ]
+    },
+    {
+      "name": "Appendix VII: Quick Villain Generator - Flaw",
+      "sides": 10,
+      "entries": [
+        "Pride",
+        "Fanaticism",
+        "Paranoia",
+        "Cowardice",
+        "Obsession",
+        "Overconfidence",
+        "Greed",
+        "Rigidity",
+        "Indecision",
+        "Secret dependency"
+      ]
+    },
+    {
+      "name": "Appendix VII: Time Pressure Generator",
+      "sides": 10,
+      "entries": [
+        "Nightfall",
+        "Weather incoming",
+        "Ritual nearing completion",
+        "Reinforcements enroute",
+        "Resource depletion",
+        "Someone's condition is worsening",
+        "Rival party closing in",
+        "Structural collapse imminent",
+        "Faction ultimatum",
+        "Roll again and amplify result (regional consequence implied)"
+      ]
+    },
+    {
+      "name": "Appendix VII: Rumor Generator - Descriptor",
+      "sides": 10,
+      "entries": [
+        "Suspicious",
+        "Strange",
+        "Secretive",
+        "Mysterious",
+        "Foreign",
+        "Chosen",
+        "Revered",
+        "Rightful",
+        "Accused",
+        "Virtuous"
+      ]
+    },
+    {
+      "name": "Appendix VII: Rumor Generator - Subject",
+      "sides": 10,
+      "entries": [
+        "Guild",
+        "Creature",
+        "Group",
+        "Cult",
+        "Explorers",
+        "Envoy",
+        "Healer",
+        "Heir",
+        "Prisoner",
+        "Monster"
+      ]
+    },
+    {
+      "name": "Appendix VII: Rumor Generator - Situation",
+      "sides": 10,
+      "entries": [
+        "Working",
+        "Hiding",
+        "Building",
+        "Gathering",
+        "Traveling",
+        "Worshipping",
+        "Plotting",
+        "Banished",
+        "Confined",
+        "Assembling"
+      ]
+    },
+    {
+      "name": "Appendix VII: Rumor Generator - Site",
+      "sides": 10,
+      "entries": [
+        "Tunnel",
+        "Crypt",
+        "Fortress",
+        "Camp",
+        "Caravan",
+        "Tent",
+        "Dwelling",
+        "Castle",
+        "Hut",
+        "Structure"
+      ]
+    },
+    {
+      "name": "Appendix VII: Rumor Generator - Terrain",
+      "sides": 10,
+      "entries": [
+        "Mountains",
+        "Hills",
+        "Forest",
+        "Woods",
+        "Desert",
+        "Plains",
+        "Tundra",
+        "Bluff",
+        "Island",
+        "Glade"
+      ]
+    },
+    {
+      "name": "Appendix VII: Solo Play - Fate & Fortune",
+      "sides": 10,
+      "entries": [
+        "No, and the answer is amplified",
+        "No",
+        "No",
+        "No",
+        "No, but...",
+        "Yes, and...",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Yes, and the answer is amplified"
+      ]
+    },
+    {
+      "name": "Appendix VII: Solo Play - Hidden Motives",
+      "sides": 10,
+      "entries": [
+        "They have no hidden motive",
+        "They have no hidden motive",
+        "They want leverage",
+        "They fear something greater",
+        "They are divided internally",
+        "They are buying time",
+        "They are protecting a secret",
+        "They serve someone (or something) unseen",
+        "They need help but are unwilling to admit it",
+        "They are lying about something important"
+      ]
+    }
+  ]
+}
