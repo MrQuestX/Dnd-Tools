@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ROLLPAD 1997</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+        
+        :root { --bg: #c0c0c0; --fg: #000000; --accent: #000080; }
+        
+        * { box-sizing: border-box; margin:0; padding:0; }
+        
+        body {
+            font-family: 'VT323', monospace;
+            background: var(--bg);
+            color: var(--fg);
+            font-size: 18px;
+            line-height: 1.2;
+            padding: 4px;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .window {
+            border: 3px solid #dfdfdf;
+            border-top-color: #ffffff;
+            border-left-color: #ffffff;
+            background: #c0c0c0;
+            box-shadow: 2px 2px 0 #808080;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .title-bar {
+            background: var(--accent);
+            color: white;
+            padding: 4px 8px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .menu-bar {
+            background: #c0c0c0;
+            border-bottom: 2px solid #808080;
+            padding: 2px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2px;
+        }
+        
+        .menu-btn {
+            padding: 4px 12px;
+            border: 2px solid #dfdfdf;
+            border-top-color: #fff;
+            border-left-color: #fff;
+            background: #c0c0c0;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        
+        .menu-btn:active {
+            border: 2px solid #808080;
+            border-top-color: #000;
+            border-left-color: #000;
+        }
+        
+        .main {
+            flex: 1;
+            padding: 8px;
+            overflow-y: auto;
+            background: #008080;
+            color: white;
+        }
+        
+        input, button {
+            font-family: 'VT323', monospace;
+            font-size: 18px;
+            padding: 6px 8px;
+            border: 2px solid #dfdfdf;
+            border-top-color: #fff;
+            border-left-color: #fff;
+            background: #fff;
+        }
+        
+        button:active {
+            border: 2px solid #808080;
+            border-top-color: #000;
+            border-left-color: #000;
+        }
+        
+        .list-item {
+            background: #c0c0c0;
+            border: 2px solid #dfdfdf;
+            border-top-color: #fff;
+            border-left-color: #fff;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .last-roll {
+            background: #000080;
+            color: #ffff00;
+            border: 2px solid #fff;
+            padding: 6px 10px;
+            margin-bottom: 8px;
+            font-size: 17px;
+            line-height: 1.3;
+        }
+        
+        .drag-handle { cursor: move; margin-right: 8px; font-size: 20px; }
+        
+        .add-section { border: 2px solid #fff; padding: 8px; background: #c0c0c0; margin: 12px 0; display: none; }
+        .edit-mode .add-section,
+        .edit-mode .delete-btn { display: block !important; }
+    </style>
+</head>
+<body>
+
+<div class="window">
+    <div class="title-bar">
+        <div>MR.QUEST'S ROLLPAD v1.97</div>
+        <button onclick="toggleEditMode()">✏️</button>
+    </div>
+
+    <div class="menu-bar">
+        <div class="menu-btn" onclick="addCreature()">+ CREATURE</div>
+        <div class="menu-btn" onclick="saveEncounter()">💾 SAVE</div>
+        <div class="menu-btn" onclick="importJSON()">📥 IMPORT</div>
+        <div class="menu-btn" onclick="loadEncounterPrompt()">📂 LOAD</div>
+        <div class="menu-btn" onclick="exportJSON()">📤 EXPORT</div>
+        <div class="menu-btn" onclick="clearAllData()">🗑 CLEAR</div>
+    </div>
+
+    <div class="main" id="main-area">
+        <h1>ROLLPAD 1997</h1>
+        <h2 id="current-name" style="color:#ffff00;">NO CREATURE SELECTED</h2>
+
+        <div class="add-section" id="add-move-section">
+            <h3>ADD NEW MOVE</h3>
+            <input type="text" id="move-name" placeholder="MOVE NAME" style="width:100%;margin-bottom:6px;">
+            <input type="text" id="move-dice" placeholder="1d20+5" style="width:100%;margin-bottom:6px;">
+            <button onclick="addMoveToCurrent()" style="width:100%;">ADD MOVE</button>
+        </div>
+
+        <h3 style="color:#ffff00;">MOVES</h3>
+        <div id="moves-list"></div>
+
+        <div class="add-section" id="add-table-section" style="margin-top:20px;">
+            <h3>ADD NEW TABLE</h3>
+            <button onclick="addCustomTable()" style="width:100%;">+ CREATE NEW TABLE</button>
+        </div>
+
+        <h3 style="color:#ffff00; margin-top:20px;">CUSTOM TABLES</h3>
+        <div id="tables-container"></div>
+    </div>
+
+    <div style="font-size:14px;padding:4px;background:#c0c0c0;border-top:2px solid #fff;">
+        CREATURES: <span id="creature-count">0</span> | <span id="edit-status">VIEW MODE</span>
+    </div>
+</div>
+
+<script>
+// ====================== DATA ======================
+let creatures = [];
+let currentCreatureIndex = -1;
+let customTables = [];
+let editMode = false;
+
+// ====================== EDIT MODE ======================
+function toggleEditMode() {
+    editMode = !editMode;
+    document.getElementById('edit-status').textContent = editMode ? "EDIT MODE" : "VIEW MODE";
+    document.querySelector('.window').classList.toggle('edit-mode', editMode);
+    updateUI();
+}
+
+// ====================== DICE ======================
+function rollDice(expr) {
+    let total = 0, rolls = [];
+    const parts = expr.replace(/\s/g,'').match(/[+-]?\d+d\d+|[+-]?\d+/gi) || [];
+    for (let part of parts) {
+        if (part.includes('d')) {
+            const sign = part.startsWith('-') ? -1 : 1;
+            const [count, sides] = part.replace(/^[+-]/,'').split('d').map(n => parseInt(n));
+            for (let i = 0; i < (count || 1); i++) {
+                const r = Math.floor(Math.random() * sides) + 1;
+                rolls.push(r);
+                total += sign * r;
+            }
+        } else total += parseInt(part);
+    }
+    return { total: total || 0, details: rolls.join('+') + '=' + total };
+}
+
+// ====================== UI ======================
+function updateUI() {
+    document.getElementById('creature-count').textContent = creatures.length;
+    document.getElementById('current-name').textContent = 
+        currentCreatureIndex >= 0 ? creatures[currentCreatureIndex].name.toUpperCase() : "NO CREATURE SELECTED";
+    renderMoves();
+    renderTables();
+}
+
+// ====================== MOVES ======================
+function renderMoves() {
+    const container = document.getElementById('moves-list');
+    container.innerHTML = '';
+    if (currentCreatureIndex < 0) return;
+
+    creatures[currentCreatureIndex].moves.forEach((move, i) => {
+        const div = document.createElement('div');
+        div.className = 'list-item';
+        div.draggable = editMode;
+        div.dataset.index = i;
+
+        div.innerHTML = `
+            <div style="display:flex; width:100%; align-items:center;">
+                ${editMode ? `<span class="drag-handle">≡</span>` : ''}
+                <div style="flex:1">
+                    ${move.lastRoll !== undefined ? `<div class="last-roll">${move.lastRoll}</div>` : ''}
+                    <strong>${move.name}</strong><br>
+                    <span style="font-size:16px;">${move.dice}</span>
+                </div>
+                <div style="display:flex; gap:6px;">
+                    <button onclick="rollMove(${i})">ROLL</button>
+                    <button class="delete-btn" onclick="removeMove(${i})" style="background:#800000;color:white;display:${editMode?'inline-block':'none'};">X</button>
+                </div>
+            </div>
+        `;
+
+        if (editMode) addDragHandlers(div, i, creatures[currentCreatureIndex].moves, renderMoves);
+        container.appendChild(div);
+    });
+}
+
+function rollMove(i) {
+    const move = creatures[currentCreatureIndex].moves[i];
+    const result = rollDice(move.dice);
+    move.lastRoll = result.total;
+
+    renderMoves(); // update the last roll display
+}
+
+// ====================== TABLES ======================
+function renderTables() {
+    const container = document.getElementById('tables-container');
+    container.innerHTML = '';
+
+    customTables.forEach((table, idx) => {
+        const div = document.createElement('div');
+        div.className = 'list-item';
+        div.draggable = editMode;
+        div.dataset.index = idx;
+
+        let lastHTML = '';
+        if (table.lastRoll !== undefined && table.lastRoll !== null) {
+            const entry = table.entries[table.lastRoll - 1] || '(empty)';
+            lastHTML = `<div class="last-roll">${table.lastRoll} — ${entry}</div>`;
+        }
+
+        div.innerHTML = `
+            <div style="display:flex; width:100%; align-items:center;">
+                ${editMode ? `<span class="drag-handle">≡</span>` : ''}
+                <div style="flex:1">
+                    ${lastHTML}
+                    <strong>${table.name} (d${table.sides})</strong>
+                </div>
+                <div style="display:flex; gap:6px;">
+                    <button onclick="rollTable(${idx})">ROLL</button>
+                    <button class="delete-btn" onclick="deleteTable(${idx})" style="background:#800000;color:white;display:${editMode?'inline-block':'none'};">X</button>
+                </div>
+            </div>
+        `;
+
+        if (editMode) addDragHandlers(div, idx, customTables, renderTables);
+        container.appendChild(div);
+    });
+}
+
+function rollTable(idx) {
+    const table = customTables[idx];
+    const roll = Math.floor(Math.random() * table.sides) + 1;
+    table.lastRoll = roll;
+    renderTables();
+}
+
+// ====================== DRAG & DROP ======================
+function addDragHandlers(el, index, array, refreshFn) {
+    el.addEventListener('dragstart', e => {
+        e.dataTransfer.setData('text/plain', index);
+        el.style.opacity = '0.5';
+    });
+    el.addEventListener('dragover', e => e.preventDefault());
+    el.addEventListener('drop', e => {
+        e.preventDefault();
+        const from = parseInt(e.dataTransfer.getData('text/plain'));
+        const to = parseInt(el.dataset.index);
+        if (from !== to) {
+            const [moved] = array.splice(from, 1);
+            array.splice(to, 0, moved);
+            refreshFn();
+        }
+    });
+    el.addEventListener('dragend', () => el.style.opacity = '1');
+}
+
+// ====================== CREATURE / MOVE / TABLE FUNCTIONS ======================
+function addCreature() {
+    const name = prompt("ENTER CREATURE NAME:");
+    if (!name) return;
+    creatures.push({ name: name.trim(), moves: [] });
+    updateUI();
+    selectCreature(creatures.length - 1);
+}
+
+function selectCreature(i) {
+    currentCreatureIndex = i;
+    updateUI();
+}
+
+function addMoveToCurrent() {
+    if (currentCreatureIndex < 0) return alert("SELECT A CREATURE FIRST");
+    const name = document.getElementById('move-name').value.trim();
+    const dice = document.getElementById('move-dice').value.trim();
+    if (!name || !dice) return alert("NAME AND DICE REQUIRED");
+    
+    creatures[currentCreatureIndex].moves.push({name, dice});
+    document.getElementById('move-name').value = '';
+    document.getElementById('move-dice').value = '';
+    renderMoves();
+}
+
+function removeMove(i) {
+    if (confirm("DELETE THIS MOVE?")) {
+        creatures[currentCreatureIndex].moves.splice(i, 1);
+        renderMoves();
+    }
+}
+
+function addCustomTable() {
+    const name = prompt("TABLE NAME:");
+    if (!name) return;
+    const sides = parseInt(prompt("HOW MANY ENTRIES?", "8")) || 8;
+    const entries = [];
+    for (let i = 1; i <= Math.min(sides, 20); i++) {
+        entries.push(prompt(`ENTRY ${i}/${sides}:`) || "(empty)");
+    }
+    customTables.push({name, sides, entries, lastRoll: null});
+    renderTables();
+}
+
+function deleteTable(idx) {
+    if (confirm("DELETE TABLE?")) {
+        customTables.splice(idx, 1);
+        renderTables();
+    }
+}
+
+// ====================== SAVE / LOAD ======================
+function saveEncounter() {
+    localStorage.setItem('rollpad1997', JSON.stringify({creatures, customTables}));
+    alert("ENCOUNTER SAVED");
+}
+
+function loadEncounterPrompt() {
+    const data = localStorage.getItem('rollpad1997');
+    if (!data) return alert("NO SAVED ENCOUNTER");
+    if (!confirm("LOAD SAVED ENCOUNTER?")) return;
+    const parsed = JSON.parse(data);
+    creatures = parsed.creatures || [];
+    customTables = parsed.customTables || [];
+    currentCreatureIndex = creatures.length ? 0 : -1;
+    updateUI();
+}
+
+function importJSON() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = e => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = ev => {
+            try {
+                const data = JSON.parse(ev.target.result);
+                creatures = data.creatures || [];
+                customTables = data.customTables || [];
+                currentCreatureIndex = creatures.length ? 0 : -1;
+                updateUI();
+                alert("JSON IMPORTED SUCCESSFULLY");
+            } catch(err) {
+                alert("INVALID JSON FILE");
+            }
+        };
+        reader.readAsText(file);
+    };
+    input.click();
+}
+
+function exportJSON() {
+    const data = {creatures, customTables};
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'rollpad1997.json';
+    a.click();
+}
+
+function clearAllData() {
+    if (confirm("ERASE EVERYTHING?")) {
+        creatures = [];
+        customTables = [];
+        currentCreatureIndex = -1;
+        localStorage.removeItem('rollpad1997');
+        updateUI();
+    }
+}
+
+// ====================== INIT ======================
+updateUI();
+if (creatures.length === 0) {
+    creatures.push({name: "GOBLIN", moves: [
+        {name: "BITE", dice: "1d6+2"},
+        {name: "SCRATCH", dice: "1d4"}
+    ]});
+    currentCreatureIndex = 0;
+    updateUI();
+}
+</script>
+</body>
+</html>
