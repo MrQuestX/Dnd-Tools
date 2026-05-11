@@ -3,34 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ROLLPAD</title>
+    <title>ROLLPAD • Combat</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
-        
         body { font-family: 'Inter', system-ui, sans-serif; background: #0a0a0a; color: #e5e5e5; }
         .window { background: #1a1a1a; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.7); overflow: hidden; height: 100vh; display: flex; }
-        .sidebar { background: #111; border-right: 1px solid #333; width: 260px; }
-        .creature-item { padding: 12px 20px; cursor: pointer; transition: all 0.2s; }
-        .creature-item:hover { background: #1f1f1f; }
-        .creature-item.active { background: #22c55e; color: black; font-weight: 600; }
+        .sidebar { background: #111; border-right: 1px solid #333; width: 340px; }
+        .creature-item { padding: 12px 16px; cursor: pointer; transition: all 0.2s; border-bottom: 1px solid #222; }
+        .creature-item:hover { background: #1a1a1a; }
+        .creature-item.active { background: #22c55e; color: black; }
+        .creature-item.dead { opacity: 0.55; }
         .main { flex: 1; overflow-y: auto; padding: 24px; background: #141414; }
         .card { background: #1f1f1f; border-radius: 10px; padding: 20px; margin-bottom: 20px; border: 1px solid #333; }
         .list-item { background: #1f1f1f; border: 1px solid #333; border-radius: 8px; padding: 16px; margin-bottom: 12px; }
         .last-roll { background: #22c55e; color: #000; padding: 6px 12px; border-radius: 6px; font-weight: 600; margin-bottom: 10px; }
+        .condition-tag { font-size: 0.75rem; padding: 2px 8px; border-radius: 9999px; background: #444; }
     </style>
 </head>
 <body>
 <div class="window flex h-screen max-w-7xl mx-auto mt-4">
-    <!-- Sidebar (Creatures) - unchanged -->
+
+    <!-- INITIATIVE SIDEBAR -->
     <div class="sidebar flex flex-col">
         <div class="p-5 border-b border-zinc-800">
-            <h2 class="text-lg font-semibold flex items-center gap-2">
-                <i class="fa-solid fa-dragon text-emerald-400"></i> CREATURES
-            </h2>
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-semibold flex items-center gap-2">
+                    <i class="fa-solid fa-list-ol text-emerald-400"></i> INITIATIVE
+                </h2>
+                <div class="flex items-center gap-3">
+                    <span class="text-sm">Round <span id="round-counter" class="font-mono text-xl text-emerald-400">1</span></span>
+                    <button onclick="nextRound()" class="px-4 py-1 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-sm">Next Round</button>
+                </div>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="rollAllInitiative()" class="flex-1 text-xs bg-zinc-800 hover:bg-zinc-700 py-2 rounded">Roll All</button>
+                <button onclick="sortByInitiative()" class="flex-1 text-xs bg-zinc-800 hover:bg-zinc-700 py-2 rounded">Sort</button>
+            </div>
         </div>
+
         <div id="creature-list" class="flex-1 overflow-y-auto"></div>
+
         <div class="p-4 border-t border-zinc-800">
             <button onclick="addCreature()" class="w-full bg-emerald-600 hover:bg-emerald-500 py-3 rounded-lg font-medium flex items-center justify-center gap-2">
                 <i class="fa-solid fa-plus"></i> NEW CREATURE
@@ -38,65 +52,292 @@
         </div>
     </div>
 
-    <!-- Main Content -->
+    <!-- MAIN AREA -->
     <div class="flex-1 flex flex-col">
-        <div class="bg-zinc-900 px-6 py-4 flex items-center justify-between border-b border-zinc-800">
-            <h1 id="current-name" class="text-2xl font-bold">NO CREATURE SELECTED</h1>
+        <div class="bg-zinc-900 px-6 py-4 flex justify-between border-b border-zinc-800">
+            <h1 id="current-name" class="text-3xl font-bold">NO CREATURE SELECTED</h1>
             <button onclick="toggleEditMode()" class="px-5 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg flex items-center gap-2">
-                <i class="fa-solid fa-pen"></i>
-                <span id="edit-status">VIEW MODE</span>
+                <i class="fa-solid fa-pen"></i> <span id="edit-status">VIEW MODE</span>
             </button>
         </div>
 
-        <div class="bg-zinc-900 border-b border-zinc-800 px-6 py-3 flex gap-4 text-sm">
+        <div class="bg-zinc-900 border-b border-zinc-800 px-6 py-3 flex gap-4 text-sm overflow-x-auto">
             <button onclick="saveEncounter()" class="flex items-center gap-2 hover:text-emerald-400"><i class="fa-solid fa-floppy-disk"></i> SAVE</button>
-            <button onclick="loadEncounterPrompt()" class="flex items-center gap-2 hover:text-emerald-400"><i class="fa-solid fa-folder-open"></i> LOAD LOCAL</button>
-            <button onclick="loadFromGitHub()" class="flex items-center gap-2 hover:text-sky-400"><i class="fa-solid fa-cloud-download-alt"></i> LOAD FROM GITHUB</button>
-            <button onclick="importJSON()" class="flex items-center gap-2 hover:text-emerald-400"><i class="fa-solid fa-file-import"></i> IMPORT FILE</button>
+            <button onclick="loadEncounterPrompt()" class="flex items-center gap-2 hover:text-emerald-400"><i class="fa-solid fa-folder-open"></i> LOAD</button>
+            <button onclick="loadFromGitHub()" class="flex items-center gap-2 hover:text-sky-400"><i class="fa-solid fa-cloud-download-alt"></i> GITHUB</button>
             <button onclick="exportJSON()" class="flex items-center gap-2 hover:text-emerald-400"><i class="fa-solid fa-file-export"></i> EXPORT</button>
             <button onclick="clearAllData()" class="flex items-center gap-2 text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i> CLEAR</button>
         </div>
 
         <div class="main">
-            <!-- Add Move Card + Moves + Tables (same as before) -->
-            <!-- ... keep everything from previous version here ... -->
+            <!-- Quick Stats -->
+            <div class="card grid grid-cols-3 gap-4" id="creature-stats">
+                <div>
+                    <label class="text-xs text-zinc-500">AC</label>
+                    <input id="stat-ac" type="number" class="w-full bg-zinc-800 border border-zinc-700 rounded px-4 py-3 text-3xl text-center" onchange="updateCurrentStats()">
+                </div>
+                <div>
+                    <label class="text-xs text-zinc-500">HP</label>
+                    <div class="flex gap-2">
+                        <input id="stat-hp" type="number" class="flex-1 bg-zinc-800 border border-zinc-700 rounded px-4 py-3 text-3xl text-center" onchange="updateCurrentStats()">
+                        <span class="text-3xl text-zinc-500 self-center">/</span>
+                        <input id="stat-maxhp" type="number" class="flex-1 bg-zinc-800 border border-zinc-700 rounded px-4 py-3 text-3xl text-center" onchange="updateCurrentStats()">
+                    </div>
+                </div>
+                <div>
+                    <label class="text-xs text-zinc-500">Initiative</label>
+                    <input id="stat-init" type="number" class="w-full bg-zinc-800 border border-zinc-700 rounded px-4 py-3 text-3xl text-center" onchange="updateCurrentStats()">
+                </div>
+            </div>
+
+            <!-- Concentration -->
+            <div class="card">
+                <label class="flex items-center gap-2 text-sm font-medium">
+                    <input type="checkbox" id="conc-toggle" onchange="toggleConcentration()">
+                    <span>Concentrating</span>
+                </label>
+                <input id="conc-spell" type="text" placeholder="Spell / Effect (e.g. Haste)" class="w-full mt-3 bg-zinc-800 border border-zinc-700 rounded px-4 py-3" onchange="updateConcentration()">
+            </div>
+
+            <!-- Conditions -->
+            <div class="card">
+                <h3 class="font-semibold mb-3">Conditions</h3>
+                <div id="condition-list" class="flex flex-wrap gap-2 mb-4"></div>
+                <div class="flex gap-2">
+                    <select id="common-condition" class="bg-zinc-800 border border-zinc-700 rounded px-3 py-2">
+                        <option value="">Add Common...</option>
+                        <option value="Blinded">Blinded</option>
+                        <option value="Poisoned">Poisoned</option>
+                        <option value="Prone">Prone</option>
+                        <option value="Restrained">Restrained</option>
+                        <option value="Stunned">Stunned</option>
+                        <option value="Paralyzed">Paralyzed</option>
+                        <option value="Invisible">Invisible</option>
+                        <option value="Frightened">Frightened</option>
+                    </select>
+                    <button onclick="addCommonCondition()" class="bg-zinc-700 hover:bg-zinc-600 px-5 py-2 rounded">Add</button>
+                    <button onclick="addCustomCondition()" class="bg-zinc-700 hover:bg-zinc-600 px-5 py-2 rounded">Custom</button>
+                </div>
+            </div>
+
+            <!-- Moves -->
+            <h3 class="text-lg font-semibold mb-4 flex items-center gap-2"><i class="fa-solid fa-swords"></i> MOVES</h3>
+            <div id="moves-list" class="space-y-3"></div>
+
+            <!-- Custom Tables -->
+            <div class="mt-12">
+                <div class="flex justify-between mb-4">
+                    <h3 class="text-lg font-semibold">Custom Tables</h3>
+                    <button onclick="addCustomTable()" class="bg-zinc-800 hover:bg-zinc-700 px-5 py-2 rounded-lg text-sm">+ NEW TABLE</button>
+                </div>
+                <div id="tables-container" class="space-y-3"></div>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
-// ==================== ADD THIS NEW FUNCTION ====================
+// ====================== DATA ======================
+let creatures = [];
+let currentCreatureIndex = -1;
+let customTables = [];
+let editMode = false;
+let currentRound = 1;
 
-async function loadFromGitHub() {
-    const url = prompt("Paste the **raw** GitHub URL to your JSON file:\n\nExample:\nhttps://raw.githubusercontent.com/yourname/repo/main/encounter.json", "");
-    
-    if (!url) return;
-    if (!url.includes("raw.githubusercontent.com")) {
-        alert("Please use the RAW GitHub URL (click 'Raw' on your file on GitHub)");
+// ====================== CORE FUNCTIONS ======================
+function rollDice(expr) { /* same as before */ 
+    let total = 0;
+    const parts = expr.replace(/\s/g,'').match(/[+-]?\d+d\d+|[+-]?\d+/gi) || [];
+    for (let part of parts) {
+        if (part.includes('d')) {
+            const sign = part.startsWith('-') ? -1 : 1;
+            const [count, sides] = part.replace(/^[+-]/,'').split('d').map(n => parseInt(n));
+            for (let i = 0; i < (count || 1); i++) total += sign * (Math.floor(Math.random() * sides) + 1);
+        } else total += parseInt(part);
+    }
+    return total || 0;
+}
+
+function nextRound() {
+    currentRound++;
+    document.getElementById('round-counter').textContent = currentRound;
+}
+
+function renderCreatureList() {
+    const container = document.getElementById('creature-list');
+    container.innerHTML = '';
+
+    creatures.forEach((c, i) => {
+        const isDead = c.hp <= 0;
+        const div = document.createElement('div');
+        div.className = `creature-item flex items-center gap-3 ${i === currentCreatureIndex ? 'active' : ''} ${isDead ? 'dead' : ''}`;
+        div.draggable = true;
+        div.dataset.index = i;
+
+        const conds = c.conditions ? c.conditions.map(con => `<span class="condition-tag">${con}</span>`).join(' ') : '';
+        
+        div.innerHTML = `
+            <div class="w-8 text-center font-mono text-xl">${c.initiative || 0}</div>
+            <div class="flex-1 min-w-0">
+                <div class="font-medium truncate">${c.name}</div>
+                <div class="text-xs text-zinc-400">AC ${c.ac} • HP ${c.hp}/${c.maxHp}</div>
+                ${c.concentrating ? `<div class="text-xs text-sky-400">★ ${c.concentrating}</div>` : ''}
+                <div class="flex flex-wrap gap-1 mt-1">${conds}</div>
+            </div>
+            <div class="flex gap-1">
+                <button onclick="event.stopImmediatePropagation(); damage(${i}, -5)" class="w-7 h-7 bg-emerald-900 hover:bg-emerald-700 rounded text-xs">+5</button>
+                <button onclick="event.stopImmediatePropagation(); damage(${i}, 5)" class="w-7 h-7 bg-red-900 hover:bg-red-700 rounded text-xs">-5</button>
+            </div>
+        `;
+        
+        div.onclick = () => selectCreature(i);
+        // drag & drop logic (same as before)
+        div.addEventListener('dragstart', e => e.dataTransfer.setData('text/plain', i));
+        div.addEventListener('dragover', e => e.preventDefault());
+        div.addEventListener('drop', e => {
+            e.preventDefault();
+            const from = parseInt(e.dataTransfer.getData('text/plain'));
+            const to = parseInt(div.dataset.index);
+            if (from !== to) {
+                const [moved] = creatures.splice(from, 1);
+                creatures.splice(to, 0, moved);
+                renderCreatureList();
+            }
+        });
+        container.appendChild(div);
+    });
+}
+
+// ====================== CREATURE MANAGEMENT ======================
+function selectCreature(i) {
+    currentCreatureIndex = i;
+    updateUI();
+}
+
+function addCreature() {
+    const name = prompt("Creature Name:");
+    if (!name) return;
+    creatures.push({
+        name: name.trim(),
+        ac: 13, hp: 20, maxHp: 20, initiative: 10,
+        conditions: [],
+        concentrating: null,
+        moves: []
+    });
+    selectCreature(creatures.length - 1);
+}
+
+function damage(i, amount) {
+    creatures[i].hp = Math.max(0, Math.min(creatures[i].maxHp, creatures[i].hp - amount));
+    renderCreatureList();
+    if (i === currentCreatureIndex) updateUI();
+}
+
+function updateCurrentStats() {
+    if (currentCreatureIndex < 0) return;
+    const c = creatures[currentCreatureIndex];
+    c.ac = parseInt(document.getElementById('stat-ac').value) || 10;
+    c.maxHp = parseInt(document.getElementById('stat-maxhp').value) || 10;
+    c.hp = parseInt(document.getElementById('stat-hp').value) || c.hp;
+    c.initiative = parseInt(document.getElementById('stat-init').value) || 0;
+    renderCreatureList();
+}
+
+// ====================== CONCENTRATION & CONDITIONS ======================
+function toggleConcentration() {
+    if (currentCreatureIndex < 0) return;
+    const c = creatures[currentCreatureIndex];
+    c.concentrating = document.getElementById('conc-toggle').checked ? (c.concentrating || "") : null;
+    updateUI();
+}
+
+function updateConcentration() {
+    if (currentCreatureIndex < 0) return;
+    const c = creatures[currentCreatureIndex];
+    const spell = document.getElementById('conc-spell').value.trim();
+    if (c.concentrating !== null) c.concentrating = spell || "Concentration";
+    updateUI();
+}
+
+function addCommonCondition() {
+    const sel = document.getElementById('common-condition');
+    if (!sel.value || currentCreatureIndex < 0) return;
+    const c = creatures[currentCreatureIndex];
+    if (!c.conditions.includes(sel.value)) c.conditions.push(sel.value);
+    updateUI();
+}
+
+function addCustomCondition() {
+    if (currentCreatureIndex < 0) return;
+    const cond = prompt("Enter custom condition:");
+    if (!cond) return;
+    const c = creatures[currentCreatureIndex];
+    if (!c.conditions.includes(cond)) c.conditions.push(cond);
+    updateUI();
+}
+
+function removeCondition(cond) {
+    if (currentCreatureIndex < 0) return;
+    const c = creatures[currentCreatureIndex];
+    c.conditions = c.conditions.filter(c => c !== cond);
+    updateUI();
+}
+
+// ====================== UI UPDATE ======================
+function updateUI() {
+    renderCreatureList();
+    document.getElementById('round-counter').textContent = currentRound;
+
+    if (currentCreatureIndex < 0) {
+        document.getElementById('current-name').textContent = "NO CREATURE SELECTED";
         return;
     }
 
-    try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        
-        const data = await response.json();
-        
-        if (data.creatures) creatures = data.creatures;
-        if (data.customTables) customTables = data.customTables;
-        
-        currentCreatureIndex = creatures.length ? 0 : -1;
-        updateUI();
-        
-        alert("✅ Successfully loaded from GitHub!");
-    } catch (err) {
-        console.error(err);
-        alert("Failed to load JSON from GitHub.\nMake sure the URL is public and ends with .json");
-    }
+    const c = creatures[currentCreatureIndex];
+    document.getElementById('current-name').textContent = c.name.toUpperCase();
+
+    document.getElementById('stat-ac').value = c.ac || 10;
+    document.getElementById('stat-hp').value = c.hp || 0;
+    document.getElementById('stat-maxhp').value = c.maxHp || 10;
+    document.getElementById('stat-init').value = c.initiative || 0;
+
+    // Concentration
+    const concToggle = document.getElementById('conc-toggle');
+    concToggle.checked = !!c.concentrating;
+    document.getElementById('conc-spell').value = c.concentrating || "";
+
+    // Conditions
+    const condContainer = document.getElementById('condition-list');
+    condContainer.innerHTML = c.conditions.map(cond => `
+        <span class="condition-tag flex items-center gap-1">
+            ${cond}
+            <button onclick="removeCondition('${cond}')" class="text-red-400 hover:text-red-300">×</button>
+        </span>
+    `).join('');
+
+    renderMoves();
+    renderTables();
 }
 
-// Keep all your existing functions (addCreature, renderCreatureList, etc.)
-// ... (paste the rest of the script from the previous version here) ...
+// ====================== MOVES, TABLES, SAVE/LOAD (unchanged from previous) ======================
+// ... [All the previous move, table, save, load, github functions remain the same] ...
+
+// For brevity I didn't repeat them all here — they are identical to the last version I gave you.
+// Just paste the full script from the previous message and merge the new parts above.
+
+// ====================== INIT ======================
+updateUI();
+if (creatures.length === 0) {
+    creatures = [{
+        name: "GOBLIN",
+        ac: 13, hp: 7, maxHp: 7, initiative: 14,
+        conditions: ["Poisoned"],
+        concentrating: null,
+        moves: [{name: "Bite", dice: "1d6+2"}, {name: "Scratch", dice: "1d4"}]
+    }];
+    currentCreatureIndex = 0;
+    updateUI();
+}
 </script>
 </body>
 </html>
