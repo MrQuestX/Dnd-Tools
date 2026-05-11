@@ -3,315 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ROLLPAD • ARCANE EDITION</title>
+    <title>ROLLPAD</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Inter:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
         
         body {
-            font-family: 'Inter', system-ui, sans-serif;
-            background: radial-gradient(circle at center, #1a0f08 0%, #0a0503 100%);
-            color: #e5d5b8;
-            background-image: 
-                linear-gradient(rgba(139, 69, 19, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(139, 69, 19, 0.1) 1px, transparent 1px);
-            background-size: 40px 40px;
+            font-family: 'VT323', monospace;
+            background: #0a0a0a;
+            color: #22ff88;
+            image-rendering: pixelated;
         }
         
         .window {
-            background: #1a140f;
-            border: 4px solid #8b4513;
-            border-image: linear-gradient(#d4af37, #8b4513) 1;
-            border-radius: 16px;
-            box-shadow: 
-                0 0 60px rgba(139, 69, 19, 0.6),
-                inset 0 0 80px rgba(0, 0, 0, 0.8);
+            background: #111111;
+            border: 6px solid #22ff88;
+            border-image: linear-gradient(#22ff88, #00cc66) 1;
+            box-shadow: 0 0 40px #22ff88, inset 0 0 30px rgba(0, 255, 100, 0.2);
+            border-radius: 0;
             overflow: hidden;
             height: 100vh;
             display: flex;
             flex-direction: column;
-            position: relative;
-        }
-        
-        .window::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,215,0,0.08) 0%, transparent 70%);
-            pointer-events: none;
-            animation: arcanePulse 15s infinite ease-in-out;
-        }
-        
-        @keyframes arcanePulse {
-            0%, 100% { opacity: 0.6; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.05); }
+            max-width: 1400px;
+            margin: 20px auto;
         }
         
         .title-bar {
-            background: linear-gradient(to right, #3a2a1f, #1c140f);
-            padding: 14px 24px;
+            background: #000000;
+            padding: 12px 20px;
+            border-bottom: 4px solid #22ff88;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 3px solid #d4af37;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
         }
         
         .main {
             flex: 1;
-            overflow-y: auto;
-            padding: 28px;
-            background: #120c08;
             display: flex;
-            gap: 24px;
+            overflow: hidden;
+            background: #0f0f0f;
         }
         
         .sidebar {
-            width: 280px;
-            background: #1f1810;
-            border-right: 3px solid #8b4513;
-            border-radius: 12px;
+            width: 320px;
+            background: #1a1a1a;
+            border-right: 4px solid #22ff88;
             padding: 16px;
             overflow-y: auto;
-            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.6);
-        }
-        
-        .creature-list {
-            max-height: 520px;
         }
         
         .creature-item {
-            background: #2a2118;
-            border: 2px solid #5c4033;
-            border-radius: 10px;
-            padding: 14px 16px;
-            margin-bottom: 10px;
+            background: #1f1f1f;
+            border: 3px solid #444;
+            padding: 14px;
+            margin-bottom: 12px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
+            transition: all 0.1s;
+            font-size: 1.25rem;
         }
         
         .creature-item:hover {
-            border-color: #d4af37;
-            transform: translateX(8px) scale(1.02);
-            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+            border-color: #22ff88;
+            background: #2a2a2a;
+            transform: translateX(6px);
         }
         
         .creature-item.active {
-            border-color: #ffd700;
-            background: linear-gradient(135deg, #3a2a1f, #2a2118);
-            box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
-        }
-        
-        .creature-item::after {
-            content: '⚔️';
-            position: absolute;
-            right: 12px;
-            top: 12px;
-            opacity: 0.2;
-            font-size: 24px;
-            transition: all 0.3s;
-        }
-        
-        .creature-item:hover::after {
-            opacity: 0.6;
-            transform: rotate(20deg);
+            border-color: #22ff88;
+            background: #003300;
+            box-shadow: 0 0 20px #22ff88;
         }
         
         .card {
-            background: linear-gradient(145deg, #2a2118, #1a140f);
-            border-radius: 14px;
+            background: #1a1a1a;
+            border: 3px solid #22ff88;
             padding: 20px;
             margin-bottom: 24px;
-            border: 2px solid #5c4033;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
         
-        h1, h2, h3 {
-            font-family: 'UnifrakturCook', cursive;
-            letter-spacing: 2px;
-        }
-        
-        .text-4xl {
-            font-size: 2.25rem;
-        }
-        
-        input, button {
-            font-size: 1.1rem;
-        }
-        
-        .list-item {
-            background: #2a2118;
-            border: 2px solid #5c4033;
-            border-radius: 12px;
-            padding: 18px;
-            margin-bottom: 16px;
-            transition: all 0.3s;
-        }
-        
-        .list-item:hover {
-            border-color: #d4af37;
-            transform: translateY(-4px);
-            box-shadow: 0 15px 25px rgba(139, 69, 19, 0.4);
-        }
-        
-        .last-roll {
-            background: linear-gradient(#22c55e, #16a34a);
-            color: #111;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            display: inline-block;
-            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
-            animation: rollPop 0.6s ease;
-        }
-        
-        @keyframes rollPop {
-            0% { transform: scale(0.6) rotate(-12deg); }
-            60% { transform: scale(1.15) rotate(8deg); }
-            100% { transform: scale(1) rotate(0); }
+        input {
+            background: #000;
+            border: 3px solid #22ff88;
+            color: #22ff88;
+            font-family: 'VT323', monospace;
+            font-size: 1.3rem;
+            padding: 12px;
         }
         
         button {
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 1.1rem;
+            transition: all 0.1s;
         }
         
         button:hover {
-            transform: translateY(-3px) scale(1.05);
+            transform: translateY(-2px);
+            filter: brightness(1.2);
         }
         
-        .dice-roll {
-            animation: diceShake 0.8s ease;
+        .last-roll {
+            background: #22ff88;
+            color: #000;
+            padding: 8px 16px;
+            border: 3px solid #000;
+            font-weight: bold;
+            display: inline-block;
+            animation: rollPop 0.6s;
         }
         
-        @keyframes diceShake {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(15deg); }
-            75% { transform: rotate(-15deg); }
+        @keyframes rollPop {
+            0% { transform: scale(0.5); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
         }
         
-        .rune {
-            position: absolute;
-            font-size: 120px;
-            opacity: 0.03;
-            color: #d4af37;
-            pointer-events: none;
-            user-select: none;
-            z-index: 0;
+        .list-item {
+            background: #1f1f1f;
+            border: 3px solid #444;
+            padding: 16px;
+            margin-bottom: 16px;
+            transition: all 0.2s;
+        }
+        
+        .list-item:hover {
+            border-color: #22ff88;
+        }
+        
+        .retro-grid {
+            background-image: 
+                linear-gradient(#22ff8822 1px, transparent 1px),
+                linear-gradient(90deg, #22ff8822 1px, transparent 1px);
+            background-size: 30px 30px;
         }
     </style>
 </head>
 <body>
-<div class="window max-w-7xl mx-auto mt-6 shadow-2xl">
+<div class="window mx-auto">
     <!-- Title Bar -->
     <div class="title-bar">
         <div class="flex items-center gap-4">
-            <i class="fa-solid fa-dice-d20 text-amber-400 text-4xl drop-shadow-lg"></i>
-            <div>
-                <h1 class="text-4xl font-bold tracking-widest text-amber-100">ROLLPAD</h1>
-                <p class="text-xs text-amber-400 -mt-1 tracking-[4px]">ARCANE EDITION</p>
-            </div>
+            <i class="fa-solid fa-dice-d20 text-4xl text-[#22ff88]"></i>
+            <h1 class="text-4xl tracking-widest">ROLLPAD</h1>
         </div>
-        <div class="flex items-center gap-4">
-            <button onclick="toggleEditMode()" 
-                    class="px-6 py-3 bg-gradient-to-r from-amber-900 to-amber-950 hover:from-amber-800 hover:to-amber-900 border border-amber-400 rounded-xl flex items-center gap-3 text-lg font-medium shadow-inner">
-                <i class="fa-solid fa-pen-to-square"></i>
-                <span id="edit-status" class="font-mono tracking-widest">VIEW MODE</span>
-            </button>
-        </div>
+        <button onclick="toggleEditMode()" 
+                class="px-6 py-2 border-4 border-[#22ff88] hover:bg-[#22ff88] hover:text-black font-bold">
+            <span id="edit-status">VIEW MODE</span>
+        </button>
     </div>
 
     <!-- Menu Bar -->
-    <div class="bg-[#1c140f] border-b border-amber-900 px-8 py-4 flex gap-3 flex-wrap shadow-inner">
+    <div class="bg-black border-b-4 border-[#22ff88] px-6 py-4 flex gap-3 flex-wrap">
         <button onclick="addCreature()" 
-                class="menu-btn px-6 py-3 bg-gradient-to-b from-amber-700 to-amber-900 hover:from-amber-600 hover:to-amber-800 rounded-2xl flex items-center gap-3 text-lg font-medium border border-amber-400">
-            <i class="fa-solid fa-dragon"></i> SUMMON CREATURE
-        </button>
+                class="menu-btn px-6 py-3 border-4 border-[#22ff88] hover:bg-[#22ff88] hover:text-black">+ NEW CREATURE</button>
         <button onclick="saveEncounter()" 
-                class="menu-btn px-6 py-3 bg-gradient-to-b from-emerald-800 to-emerald-950 hover:from-emerald-700 hover:to-emerald-900 rounded-2xl flex items-center gap-3 text-lg font-medium border border-emerald-400">
-            <i class="fa-solid fa-floppy-disk"></i> INSCRIBE
-        </button>
+                class="menu-btn px-6 py-3 border-4 border-[#22ff88] hover:bg-[#22ff88] hover:text-black">SAVE</button>
         <button onclick="loadEncounterPrompt()" 
-                class="menu-btn px-6 py-3 bg-gradient-to-b from-sky-800 to-sky-950 hover:from-sky-700 hover:to-sky-900 rounded-2xl flex items-center gap-3 text-lg font-medium border border-sky-400">
-            <i class="fa-solid fa-book-open"></i> CONSULT TOMES
-        </button>
+                class="menu-btn px-6 py-3 border-4 border-[#22ff88] hover:bg-[#22ff88] hover:text-black">LOAD</button>
+        <button onclick="importJSON()" 
+                class="menu-btn px-6 py-3 border-4 border-[#22ff88] hover:bg-[#22ff88] hover:text-black">IMPORT</button>
         <button onclick="exportJSON()" 
-                class="menu-btn px-6 py-3 bg-gradient-to-b from-violet-800 to-violet-950 hover:from-violet-700 hover:to-violet-900 rounded-2xl flex items-center gap-3 text-lg font-medium border border-violet-400">
-            <i class="fa-solid fa-scroll"></i> SCROLL EXPORT
-        </button>
+                class="menu-btn px-6 py-3 border-4 border-[#22ff88] hover:bg-[#22ff88] hover:text-black">EXPORT</button>
         <button onclick="clearAllData()" 
-                class="menu-btn px-6 py-3 bg-gradient-to-b from-red-900 to-red-950 hover:from-red-800 hover:to-red-900 rounded-2xl flex items-center gap-3 text-lg font-medium border border-red-400 text-red-200">
-            <i class="fa-solid fa-skull"></i> BANISH ALL
-        </button>
+                class="menu-btn px-6 py-3 border-4 border-red-500 hover:bg-red-500 hover:text-black text-red-400">CLEAR ALL</button>
     </div>
 
     <div class="main">
         <!-- Creature Sidebar -->
-        <div class="sidebar">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="text-2xl font-bold text-amber-100 flex items-center gap-3">
-                    <i class="fa-solid fa-users"></i> BESTIARY
-                </h3>
-                <div class="text-sm text-amber-400 font-mono" id="creature-count">0</div>
-            </div>
-            
-            <div id="creature-list" class="creature-list space-y-2"></div>
+        <div class="sidebar retro-grid">
+            <h3 class="text-2xl mb-4 border-b-4 border-[#22ff88] pb-2">BESTIARY</h3>
+            <div id="creature-list" class="space-y-3"></div>
             
             <button onclick="addCreature()" 
-                    class="w-full mt-6 py-4 bg-gradient-to-r from-amber-600 to-orange-700 hover:from-amber-500 hover:to-orange-600 rounded-2xl text-xl font-bold border-2 border-amber-300 shadow-md">
-                + SUMMON NEW BEAST
+                    class="w-full mt-6 py-4 border-4 border-[#22ff88] hover:bg-[#22ff88] hover:text-black text-xl font-bold">
+                + SUMMON
             </button>
         </div>
 
-        <!-- Main Content Area -->
-        <div class="flex-1">
-            <div class="flex justify-between items-end mb-8">
-                <h2 id="current-name" class="text-5xl font-bold text-amber-100 tracking-widest drop-shadow-lg">NO CREATURE SELECTED</h2>
-                <div onclick="rollInitiative()" 
-                     class="cursor-pointer bg-gradient-to-br from-red-700 to-rose-900 hover:from-red-600 hover:to-rose-800 px-8 py-3 rounded-2xl text-xl font-bold flex items-center gap-3 border border-red-400">
-                    <i class="fa-solid fa-bolt"></i> ROLL INITIATIVE
-                </div>
+        <!-- Main Content -->
+        <div class="flex-1 p-8 overflow-y-auto">
+            <div class="flex justify-between items-center mb-8">
+                <h2 id="current-name" class="text-5xl tracking-widest">NO CREATURE SELECTED</h2>
             </div>
 
-            <!-- Add Move Section -->
-            <div class="card" id="add-move-section">
-                <h3 class="text-2xl font-bold mb-5 flex items-center gap-4 text-amber-300">
-                    <i class="fa-solid fa-hand-fist"></i> INVOKE NEW MOVE
+            <!-- Add Move -->
+            <div class="card">
+                <h3 class="text-3xl mb-6 flex items-center gap-3">
+                    <i class="fa-solid fa-bolt"></i> ADD NEW MOVE
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <input type="text" id="move-name" placeholder="Arcane Strike" 
-                           class="px-6 py-5 bg-[#2a2118] border-2 border-amber-800 focus:border-amber-400 rounded-2xl text-xl placeholder:text-amber-700">
-                    <input type="text" id="move-dice" placeholder="6d8 + 5" 
-                           class="px-6 py-5 bg-[#2a2118] border-2 border-amber-800 focus:border-amber-400 rounded-2xl text-xl placeholder:text-amber-700 font-mono">
+                    <input type="text" id="move-name" placeholder="MOVE NAME" class="w-full">
+                    <input type="text" id="move-dice" placeholder="e.g. 8d6+4" class="w-full">
                     <button onclick="addMoveToCurrent()" 
-                            class="bg-gradient-to-br from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-bold rounded-2xl text-xl py-5 shadow-lg">
-                        CAST MOVE
-                    </button>
+                            class="bg-[#22ff88] text-black font-bold py-6 text-xl">ADD MOVE</button>
                 </div>
             </div>
 
             <!-- Moves -->
-            <h3 class="text-2xl font-bold mb-6 mt-10 flex items-center gap-4 text-orange-300">
-                <i class="fa-solid fa-swords"></i> BATTLE REPERTOIRE
+            <h3 class="text-3xl mb-6 flex items-center gap-3">
+                <i class="fa-solid fa-swords"></i> MOVES
             </h3>
             <div id="moves-list" class="space-y-4"></div>
 
             <!-- Custom Tables -->
-            <div class="mt-16">
+            <div class="mt-12">
                 <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-2xl font-bold flex items-center gap-4 text-sky-300">
-                        <i class="fa-solid fa-table-cells"></i> ARCANE TABLES
+                    <h3 class="text-3xl flex items-center gap-3">
+                        <i class="fa-solid fa-table"></i> CUSTOM TABLES
                     </h3>
                     <button onclick="addCustomTable()" 
-                            class="bg-gradient-to-r from-sky-700 to-cyan-800 hover:from-sky-600 hover:to-cyan-700 px-8 py-4 rounded-2xl text-lg font-bold flex items-center gap-3">
-                        <i class="fa-solid fa-plus"></i> NEW TABLE
-                    </button>
+                            class="px-8 py-4 border-4 border-[#22ff88] hover:bg-[#22ff88] hover:text-black">NEW TABLE</button>
                 </div>
                 <div id="tables-container" class="space-y-4"></div>
             </div>
@@ -319,12 +221,10 @@
     </div>
 
     <!-- Footer -->
-    <div class="bg-[#1c140f] text-amber-400 text-sm px-8 py-5 border-t border-amber-900 flex justify-between items-center font-mono">
-        <div class="flex items-center gap-6">
-            <div>✦ DUNGEONS & DRAGONS COMPANION ✦</div>
-            <div class="text-amber-500">v2.0 • Fantasy Edition</div>
-        </div>
-        <div id="edit-status-footer" class="font-bold tracking-widest">VIEW MODE</div>
+    <div class="bg-black border-t-4 border-[#22ff88] px-8 py-4 text-sm flex justify-between items-center">
+        <div>RETRO • MODERN • TABLETOP</div>
+        <div id="edit-status-footer">VIEW MODE</div>
+        <div>CREATURES: <span id="creature-count" class="text-[#22ff88]">0</span></div>
     </div>
 </div>
 
@@ -338,7 +238,7 @@ let editMode = false;
 // ====================== EDIT MODE ======================
 function toggleEditMode() {
     editMode = !editMode;
-    const status = editMode ? "ARCANE EDIT MODE" : "VIEW MODE";
+    const status = editMode ? "EDIT MODE" : "VIEW MODE";
     document.getElementById('edit-status').textContent = status;
     document.getElementById('edit-status-footer').textContent = status;
     updateUI();
@@ -346,21 +246,20 @@ function toggleEditMode() {
 
 // ====================== DICE ======================
 function rollDice(expr) {
-    let total = 0, rolls = [];
+    let total = 0;
     const parts = expr.replace(/\s/g,'').match(/[+-]?\d+d\d+|[+-]?\d+/gi) || [];
     for (let part of parts) {
         if (part.includes('d')) {
             const sign = part.startsWith('-') ? -1 : 1;
-            const cleaned = part.replace(/^[+-]/,'');
-            const [count, sides] = cleaned.split('d').map(n => parseInt(n));
+            const [count, sides] = part.replace(/^[+-]/,'').split('d').map(n => parseInt(n));
             for (let i = 0; i < (count || 1); i++) {
-                const r = Math.floor(Math.random() * sides) + 1;
-                rolls.push(r);
-                total += sign * r;
+                total += sign * (Math.floor(Math.random() * sides) + 1);
             }
-        } else total += parseInt(part);
+        } else {
+            total += parseInt(part);
+        }
     }
-    return { total: total || 0, details: rolls.join('+') + '=' + total };
+    return { total: total || 0 };
 }
 
 // ====================== UI ======================
@@ -379,10 +278,10 @@ function renderCreatureList() {
     
     creatures.forEach((creature, idx) => {
         const div = document.createElement('div');
-        div.className = `creature-item flex items-center justify-between ${idx === currentCreatureIndex ? 'active' : ''}`;
+        div.className = `creature-item flex justify-between items-center ${idx === currentCreatureIndex ? 'active' : ''}`;
         div.innerHTML = `
-            <div class="font-bold text-xl">${creature.name}</div>
-            <div class="text-amber-400 text-sm font-mono">${creature.moves.length} moves</div>
+            <div class="font-bold">${creature.name}</div>
+            <div class="text-sm text-[#22ff88]">${creature.moves.length} MOVES</div>
         `;
         div.onclick = () => {
             currentCreatureIndex = idx;
@@ -390,10 +289,6 @@ function renderCreatureList() {
         };
         container.appendChild(div);
     });
-    
-    if (creatures.length === 0) {
-        container.innerHTML = `<div class="text-center py-12 text-amber-500/60 italic">Your bestiary is empty...</div>`;
-    }
 }
 
 // ====================== MOVES ======================
@@ -406,21 +301,17 @@ function renderMoves() {
         const div = document.createElement('div');
         div.className = 'list-item flex items-center justify-between';
         div.innerHTML = `
-            <div class="flex-1">
-                ${move.lastRoll !== undefined ? `<div class="last-roll">Rolled ${move.lastRoll}</div>` : ''}
-                <strong class="text-2xl">${move.name}</strong><br>
-                <span class="text-emerald-400 font-mono text-xl">${move.dice}</span>
+            <div>
+                ${move.lastRoll !== undefined ? `<div class="last-roll">LAST ROLL: ${move.lastRoll}</div>` : ''}
+                <div class="text-3xl">${move.name}</div>
+                <div class="text-[#22ff88] text-2xl">${move.dice}</div>
             </div>
             <div class="flex gap-3">
                 <button onclick="rollMove(${i}); event.stopImmediatePropagation()" 
-                        class="bg-gradient-to-br from-zinc-700 to-zinc-900 hover:from-amber-600 hover:to-amber-700 px-8 py-4 rounded-2xl text-xl">
-                    <i class="fa-solid fa-dice-d20"></i> ROLL
-                </button>
+                        class="px-10 py-6 border-4 border-[#22ff88] hover:bg-[#22ff88] hover:text-black text-xl">ROLL</button>
                 ${editMode ? `
                 <button onclick="removeMove(${i}); event.stopImmediatePropagation()" 
-                        class="bg-red-900 hover:bg-red-800 px-6 py-4 rounded-2xl">
-                    <i class="fa-solid fa-trash"></i>
-                </button>` : ''}
+                        class="px-6 py-6 border-4 border-red-500 hover:bg-red-500 hover:text-black">✕</button>` : ''}
             </div>
         `;
         container.appendChild(div);
@@ -431,21 +322,7 @@ function rollMove(i) {
     const move = creatures[currentCreatureIndex].moves[i];
     const result = rollDice(move.dice);
     move.lastRoll = result.total;
-    
-    // Visual feedback
-    const buttons = document.querySelectorAll('#moves-list button');
-    if (buttons[i]) buttons[i].classList.add('dice-roll');
-    setTimeout(() => {
-        if (buttons[i]) buttons[i].classList.remove('dice-roll');
-    }, 800);
-    
     renderMoves();
-}
-
-function rollInitiative() {
-    if (currentCreatureIndex < 0) return;
-    const initRoll = Math.floor(Math.random() * 20) + 1;
-    alert(`🎲 Initiative Roll!\n\n${creatures[currentCreatureIndex].name} rolled a ${initRoll}!`);
 }
 
 // ====================== TABLES ======================
@@ -455,29 +332,25 @@ function renderTables() {
 
     customTables.forEach((table, idx) => {
         const div = document.createElement('div');
-        div.className = 'list-item flex items-center justify-between';
-        
-        let lastHTML = '';
-        if (table.lastRoll !== undefined && table.lastRoll !== null) {
-            lastHTML = `<div class="last-roll">${table.lastRoll} — ${table.entries[table.lastRoll-1] || '(empty)'}</div>`;
+        div.className = 'list-item';
+        let last = '';
+        if (table.lastRoll) {
+            last = `<div class="last-roll">ROLL ${table.lastRoll} → ${table.entries[table.lastRoll-1] || ''}</div>`;
         }
-
         div.innerHTML = `
-            <div>
-                ${lastHTML}
-                <strong class="text-2xl">${table.name}</strong> 
-                <span class="text-amber-400 text-base">(${table.sides} entries)</span>
-            </div>
-            <div class="flex gap-3">
-                <button onclick="rollTable(${idx}); event.stopImmediatePropagation()" 
-                        class="bg-gradient-to-br from-zinc-700 to-zinc-900 hover:from-sky-600 hover:to-sky-700 px-8 py-4 rounded-2xl text-xl">
-                    <i class="fa-solid fa-dice"></i> ROLL
-                </button>
-                ${editMode ? `
-                <button onclick="deleteTable(${idx}); event.stopImmediatePropagation()" 
-                        class="bg-red-900 hover:bg-red-800 px-6 py-4 rounded-2xl">
-                    <i class="fa-solid fa-trash"></i>
-                </button>` : ''}
+            <div class="flex justify-between items-center">
+                <div>
+                    ${last}
+                    <div class="text-3xl">${table.name}</div>
+                    <div class="text-[#22ff88]">(${table.sides} entries)</div>
+                </div>
+                <div class="flex gap-3">
+                    <button onclick="rollTable(${idx}); event.stopImmediatePropagation()" 
+                            class="px-10 py-6 border-4 border-[#22ff88] hover:bg-[#22ff88] hover:text-black">ROLL</button>
+                    ${editMode ? `
+                    <button onclick="deleteTable(${idx}); event.stopImmediatePropagation()" 
+                            class="px-6 py-6 border-4 border-red-500 hover:bg-red-500 hover:text-black">✕</button>` : ''}
+                </div>
             </div>
         `;
         container.appendChild(div);
@@ -491,25 +364,20 @@ function rollTable(idx) {
     renderTables();
 }
 
-// ====================== CREATURE FUNCTIONS ======================
+// ====================== CREATURES ======================
 function addCreature() {
-    const name = prompt("Enter creature name (e.g. Ancient Red Dragon):");
+    const name = prompt("Creature Name:");
     if (!name) return;
-    creatures.push({ 
-        name: name.trim(), 
-        moves: [] 
-    });
+    creatures.push({ name: name.trim(), moves: [] });
     currentCreatureIndex = creatures.length - 1;
     updateUI();
 }
 
 function addMoveToCurrent() {
     if (currentCreatureIndex < 0) return alert("Select a creature first");
-    
     const name = document.getElementById('move-name').value.trim();
     const dice = document.getElementById('move-dice').value.trim();
-    
-    if (!name || !dice) return alert("Both name and dice expression required");
+    if (!name || !dice) return alert("Name and dice required");
     
     creatures[currentCreatureIndex].moves.push({name, dice});
     document.getElementById('move-name').value = '';
@@ -518,28 +386,27 @@ function addMoveToCurrent() {
 }
 
 function removeMove(i) {
-    if (confirm("Banish this move?")) {
+    if (confirm("Delete move?")) {
         creatures[currentCreatureIndex].moves.splice(i, 1);
         renderMoves();
     }
 }
 
-// ====================== TABLE FUNCTIONS ======================
+// ====================== TABLES ======================
 function addCustomTable() {
-    const name = prompt("Table Name (e.g. Random Treasure):");
+    const name = prompt("Table Name:");
     if (!name) return;
-    const sides = parseInt(prompt("How many entries on this table?", "10")) || 10;
+    const sides = parseInt(prompt("Number of entries?", "8")) || 8;
     const entries = [];
     for (let i = 1; i <= sides; i++) {
-        const entry = prompt(`Entry ${i}/${sides}:`) || "(empty)";
-        entries.push(entry);
+        entries.push(prompt(`Entry ${i}:`) || "(empty)");
     }
     customTables.push({name, sides, entries, lastRoll: null});
     renderTables();
 }
 
 function deleteTable(idx) {
-    if (confirm("Destroy this table?")) {
+    if (confirm("Delete table?")) {
         customTables.splice(idx, 1);
         renderTables();
     }
@@ -547,15 +414,14 @@ function deleteTable(idx) {
 
 // ====================== SAVE / LOAD ======================
 function saveEncounter() {
-    localStorage.setItem('rollpad_arcane', JSON.stringify({creatures, customTables}));
-    alert("✅ Your encounter has been inscribed in the eternal tomes.");
+    localStorage.setItem('rollpad_retro', JSON.stringify({creatures, customTables}));
+    alert("✅ Saved!");
 }
 
 function loadEncounterPrompt() {
-    const data = localStorage.getItem('rollpad_arcane');
-    if (!data) return alert("No saved encounters found.");
-    if (!confirm("Load previous encounter from the archives?")) return;
-    
+    const data = localStorage.getItem('rollpad_retro');
+    if (!data) return alert("No save found");
+    if (!confirm("Load saved encounter?")) return;
     const parsed = JSON.parse(data);
     creatures = parsed.creatures || [];
     customTables = parsed.customTables || [];
@@ -563,21 +429,44 @@ function loadEncounterPrompt() {
     updateUI();
 }
 
+function importJSON() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = e => {
+        const reader = new FileReader();
+        reader.onload = ev => {
+            try {
+                const data = JSON.parse(ev.target.result);
+                creatures = data.creatures || [];
+                customTables = data.customTables || [];
+                currentCreatureIndex = creatures.length ? 0 : -1;
+                updateUI();
+                alert("✅ Imported successfully");
+            } catch(err) {
+                alert("Invalid JSON");
+            }
+        };
+        reader.readAsText(e.target.files[0]);
+    };
+    input.click();
+}
+
 function exportJSON() {
     const data = {creatures, customTables};
     const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'rollpad_bestiary.json';
+    a.download = 'rollpad.json';
     a.click();
 }
 
 function clearAllData() {
-    if (confirm("Erase ALL creatures and tables from existence?")) {
+    if (confirm("Clear everything?")) {
         creatures = [];
         customTables = [];
         currentCreatureIndex = -1;
-        localStorage.removeItem('rollpad_arcane');
+        localStorage.removeItem('rollpad_retro');
         updateUI();
     }
 }
@@ -586,22 +475,13 @@ function clearAllData() {
 updateUI();
 
 if (creatures.length === 0) {
-    creatures = [
-        {
-            name: "GOBLIN SHAMAN", 
-            moves: [
-                {name: "Fire Bolt", dice: "3d6+2"},
-                {name: "Hex", dice: "2d8"}
-            ]
-        },
-        {
-            name: "ANCIENT RED DRAGON", 
-            moves: [
-                {name: "Fire Breath", dice: "18d6"},
-                {name: "Claw", dice: "4d10+8"}
-            ]
-        }
-    ];
+    creatures.push({
+        name: "GOBLIN", 
+        moves: [
+            {name: "Bite", dice: "1d6+2"},
+            {name: "Scratch", dice: "1d4"}
+        ]
+    });
     currentCreatureIndex = 0;
     updateUI();
 }
