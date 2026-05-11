@@ -7,33 +7,31 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         
         body {
-            font-family: 'VT323', monospace;
+            font-family: 'Inter', system-ui, sans-serif;
             background: #0a0a0a;
-            color: #22ff88;
-            image-rendering: pixelated;
+            color: #e5e5e5;
         }
         
         .window {
             background: #111111;
-            border: 6px solid #22ff88;
-            border-image: linear-gradient(#22ff88, #00cc66) 1;
-            box-shadow: 0 0 40px #22ff88, inset 0 0 30px rgba(0, 255, 100, 0.2);
-            border-radius: 0;
+            border-radius: 16px;
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.5);
             overflow: hidden;
             height: 100vh;
             display: flex;
             flex-direction: column;
-            max-width: 1400px;
+            max-width: 1480px;
             margin: 20px auto;
+            border: 1px solid #333;
         }
         
         .title-bar {
-            background: #000000;
-            padding: 12px 20px;
-            border-bottom: 4px solid #22ff88;
+            background: #1a1a1a;
+            padding: 16px 24px;
+            border-bottom: 1px solid #333;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -43,177 +41,174 @@
             flex: 1;
             display: flex;
             overflow: hidden;
-            background: #0f0f0f;
+            background: #141414;
         }
         
         .sidebar {
-            width: 320px;
+            width: 340px;
             background: #1a1a1a;
-            border-right: 4px solid #22ff88;
-            padding: 16px;
+            border-right: 1px solid #333;
+            padding: 20px;
             overflow-y: auto;
         }
         
         .creature-item {
-            background: #1f1f1f;
-            border: 3px solid #444;
-            padding: 14px;
+            background: #222;
+            border: 1px solid #444;
+            border-radius: 12px;
+            padding: 16px;
             margin-bottom: 12px;
             cursor: pointer;
-            transition: all 0.1s;
-            font-size: 1.25rem;
+            transition: all 0.2s;
         }
         
         .creature-item:hover {
-            border-color: #22ff88;
             background: #2a2a2a;
-            transform: translateX(6px);
+            border-color: #666;
         }
         
         .creature-item.active {
-            border-color: #22ff88;
-            background: #003300;
-            box-shadow: 0 0 20px #22ff88;
+            background: #1f2937;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
         }
         
         .card {
-            background: #1a1a1a;
-            border: 3px solid #22ff88;
-            padding: 20px;
-            margin-bottom: 24px;
+            background: #1f1f1f;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 28px;
+            border: 1px solid #333;
         }
         
         input {
-            background: #000;
-            border: 3px solid #22ff88;
-            color: #22ff88;
-            font-family: 'VT323', monospace;
-            font-size: 1.3rem;
-            padding: 12px;
+            background: #252525;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 8px;
+            font-size: 1.1rem;
         }
         
         button {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 1.1rem;
-            transition: all 0.1s;
+            transition: all 0.2s;
         }
         
         button:hover {
-            transform: translateY(-2px);
-            filter: brightness(1.2);
+            transform: translateY(-1px);
         }
         
         .last-roll {
-            background: #22ff88;
+            background: #22c55e;
             color: #000;
             padding: 8px 16px;
-            border: 3px solid #000;
-            font-weight: bold;
+            border-radius: 8px;
+            font-weight: 600;
             display: inline-block;
-            animation: rollPop 0.6s;
-        }
-        
-        @keyframes rollPop {
-            0% { transform: scale(0.5); }
-            50% { transform: scale(1.3); }
-            100% { transform: scale(1); }
         }
         
         .list-item {
             background: #1f1f1f;
-            border: 3px solid #444;
-            padding: 16px;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 20px;
             margin-bottom: 16px;
             transition: all 0.2s;
         }
         
         .list-item:hover {
-            border-color: #22ff88;
-        }
-        
-        .retro-grid {
-            background-image: 
-                linear-gradient(#22ff8822 1px, transparent 1px),
-                linear-gradient(90deg, #22ff8822 1px, transparent 1px);
-            background-size: 30px 30px;
+            border-color: #555;
+            background: #252525;
         }
     </style>
 </head>
 <body>
-<div class="window mx-auto">
+<div class="window">
     <!-- Title Bar -->
     <div class="title-bar">
-        <div class="flex items-center gap-4">
-            <i class="fa-solid fa-dice-d20 text-4xl text-[#22ff88]"></i>
-            <h1 class="text-4xl tracking-widest">ROLLPAD</h1>
+        <div class="flex items-center gap-3">
+            <i class="fa-solid fa-dice-d20 text-emerald-400 text-3xl"></i>
+            <h1 class="text-3xl font-semibold tracking-tight">ROLLPAD</h1>
         </div>
         <button onclick="toggleEditMode()" 
-                class="px-6 py-2 border-4 border-[#22ff88] hover:bg-[#22ff88] hover:text-black font-bold">
+                class="px-6 py-2.5 bg-zinc-800 hover:bg-zinc-700 rounded-xl flex items-center gap-2 font-medium">
+            <i class="fa-solid fa-pen"></i>
             <span id="edit-status">VIEW MODE</span>
         </button>
     </div>
 
     <!-- Menu Bar -->
-    <div class="bg-black border-b-4 border-[#22ff88] px-6 py-4 flex gap-3 flex-wrap">
+    <div class="bg-zinc-900 border-b border-zinc-800 px-8 py-4 flex gap-3 flex-wrap">
         <button onclick="addCreature()" 
-                class="menu-btn px-6 py-3 border-4 border-[#22ff88] hover:bg-[#22ff88] hover:text-black">+ NEW CREATURE</button>
+                class="menu-btn px-6 py-3 bg-zinc-800 hover:bg-zinc-700 rounded-xl flex items-center gap-2">
+            <i class="fa-solid fa-plus"></i> NEW CREATURE
+        </button>
         <button onclick="saveEncounter()" 
-                class="menu-btn px-6 py-3 border-4 border-[#22ff88] hover:bg-[#22ff88] hover:text-black">SAVE</button>
+                class="menu-btn px-6 py-3 bg-zinc-800 hover:bg-zinc-700 rounded-xl flex items-center gap-2">
+            <i class="fa-solid fa-floppy-disk"></i> SAVE
+        </button>
         <button onclick="loadEncounterPrompt()" 
-                class="menu-btn px-6 py-3 border-4 border-[#22ff88] hover:bg-[#22ff88] hover:text-black">LOAD</button>
+                class="menu-btn px-6 py-3 bg-zinc-800 hover:bg-zinc-700 rounded-xl flex items-center gap-2">
+            <i class="fa-solid fa-folder-open"></i> LOAD
+        </button>
         <button onclick="importJSON()" 
-                class="menu-btn px-6 py-3 border-4 border-[#22ff88] hover:bg-[#22ff88] hover:text-black">IMPORT</button>
+                class="menu-btn px-6 py-3 bg-zinc-800 hover:bg-zinc-700 rounded-xl flex items-center gap-2">
+            <i class="fa-solid fa-file-import"></i> IMPORT
+        </button>
         <button onclick="exportJSON()" 
-                class="menu-btn px-6 py-3 border-4 border-[#22ff88] hover:bg-[#22ff88] hover:text-black">EXPORT</button>
+                class="menu-btn px-6 py-3 bg-zinc-800 hover:bg-zinc-700 rounded-xl flex items-center gap-2">
+            <i class="fa-solid fa-file-export"></i> EXPORT
+        </button>
         <button onclick="clearAllData()" 
-                class="menu-btn px-6 py-3 border-4 border-red-500 hover:bg-red-500 hover:text-black text-red-400">CLEAR ALL</button>
+                class="menu-btn px-6 py-3 bg-zinc-800 hover:bg-zinc-700 rounded-xl flex items-center gap-2 text-red-400">
+            <i class="fa-solid fa-trash"></i> CLEAR ALL
+        </button>
     </div>
 
     <div class="main">
         <!-- Creature Sidebar -->
-        <div class="sidebar retro-grid">
-            <h3 class="text-2xl mb-4 border-b-4 border-[#22ff88] pb-2">BESTIARY</h3>
-            <div id="creature-list" class="space-y-3"></div>
-            
-            <button onclick="addCreature()" 
-                    class="w-full mt-6 py-4 border-4 border-[#22ff88] hover:bg-[#22ff88] hover:text-black text-xl font-bold">
-                + SUMMON
-            </button>
+        <div class="sidebar">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-semibold">BESTIARY</h3>
+                <span id="creature-count" class="text-emerald-400 font-mono">0</span>
+            </div>
+            <div id="creature-list" class="space-y-2"></div>
         </div>
 
         <!-- Main Content -->
         <div class="flex-1 p-8 overflow-y-auto">
-            <div class="flex justify-between items-center mb-8">
-                <h2 id="current-name" class="text-5xl tracking-widest">NO CREATURE SELECTED</h2>
-            </div>
+            <h2 id="current-name" class="text-4xl font-bold mb-8">NO CREATURE SELECTED</h2>
 
-            <!-- Add Move -->
-            <div class="card">
-                <h3 class="text-3xl mb-6 flex items-center gap-3">
-                    <i class="fa-solid fa-bolt"></i> ADD NEW MOVE
+            <!-- Add Move Section (Hidden in View Mode) -->
+            <div id="add-move-section" class="card hidden">
+                <h3 class="text-xl font-semibold mb-5 flex items-center gap-2">
+                    <i class="fa-solid fa-bolt text-yellow-400"></i> ADD NEW MOVE
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <input type="text" id="move-name" placeholder="MOVE NAME" class="w-full">
-                    <input type="text" id="move-dice" placeholder="e.g. 8d6+4" class="w-full">
+                    <input type="text" id="move-name" placeholder="Move Name (e.g. Fireball)" class="px-5 py-4 w-full">
+                    <input type="text" id="move-dice" placeholder="Dice (e.g. 8d6+4)" class="px-5 py-4 w-full">
                     <button onclick="addMoveToCurrent()" 
-                            class="bg-[#22ff88] text-black font-bold py-6 text-xl">ADD MOVE</button>
+                            class="bg-emerald-600 hover:bg-emerald-500 text-white font-medium rounded-xl">
+                        ADD MOVE
+                    </button>
                 </div>
             </div>
 
             <!-- Moves -->
-            <h3 class="text-3xl mb-6 flex items-center gap-3">
-                <i class="fa-solid fa-swords"></i> MOVES
+            <h3 class="text-xl font-semibold mb-5 flex items-center gap-2">
+                <i class="fa-solid fa-swords text-orange-400"></i> MOVES
             </h3>
             <div id="moves-list" class="space-y-4"></div>
 
             <!-- Custom Tables -->
             <div class="mt-12">
                 <div class="flex justify-between items-center mb-6">
-                    <h3 class="text-3xl flex items-center gap-3">
-                        <i class="fa-solid fa-table"></i> CUSTOM TABLES
+                    <h3 class="text-xl font-semibold flex items-center gap-2">
+                        <i class="fa-solid fa-table text-sky-400"></i> CUSTOM TABLES
                     </h3>
-                    <button onclick="addCustomTable()" 
-                            class="px-8 py-4 border-4 border-[#22ff88] hover:bg-[#22ff88] hover:text-black">NEW TABLE</button>
+                    <button id="new-table-btn" onclick="addCustomTable()" 
+                            class="hidden bg-zinc-800 hover:bg-zinc-700 px-6 py-3 rounded-xl text-sm flex items-center gap-2">
+                        <i class="fa-solid fa-plus"></i> NEW TABLE
+                    </button>
                 </div>
                 <div id="tables-container" class="space-y-4"></div>
             </div>
@@ -221,10 +216,9 @@
     </div>
 
     <!-- Footer -->
-    <div class="bg-black border-t-4 border-[#22ff88] px-8 py-4 text-sm flex justify-between items-center">
-        <div>RETRO • MODERN • TABLETOP</div>
-        <div id="edit-status-footer">VIEW MODE</div>
-        <div>CREATURES: <span id="creature-count" class="text-[#22ff88]">0</span></div>
+    <div class="bg-zinc-900 text-xs text-zinc-500 px-8 py-4 border-t border-zinc-800 flex justify-between">
+        <div>Modern Edition • Built for Tabletop</div>
+        <div id="edit-status-footer" class="font-mono">VIEW MODE</div>
     </div>
 </div>
 
@@ -241,6 +235,11 @@ function toggleEditMode() {
     const status = editMode ? "EDIT MODE" : "VIEW MODE";
     document.getElementById('edit-status').textContent = status;
     document.getElementById('edit-status-footer').textContent = status;
+    
+    // Show/Hide edit-only elements
+    document.getElementById('add-move-section').classList.toggle('hidden', !editMode);
+    document.getElementById('new-table-btn').classList.toggle('hidden', !editMode);
+    
     updateUI();
 }
 
@@ -280,8 +279,8 @@ function renderCreatureList() {
         const div = document.createElement('div');
         div.className = `creature-item flex justify-between items-center ${idx === currentCreatureIndex ? 'active' : ''}`;
         div.innerHTML = `
-            <div class="font-bold">${creature.name}</div>
-            <div class="text-sm text-[#22ff88]">${creature.moves.length} MOVES</div>
+            <div class="font-medium">${creature.name}</div>
+            <div class="text-emerald-400 text-sm">${creature.moves.length} moves</div>
         `;
         div.onclick = () => {
             currentCreatureIndex = idx;
@@ -302,16 +301,18 @@ function renderMoves() {
         div.className = 'list-item flex items-center justify-between';
         div.innerHTML = `
             <div>
-                ${move.lastRoll !== undefined ? `<div class="last-roll">LAST ROLL: ${move.lastRoll}</div>` : ''}
-                <div class="text-3xl">${move.name}</div>
-                <div class="text-[#22ff88] text-2xl">${move.dice}</div>
+                ${move.lastRoll !== undefined ? `<div class="last-roll">Rolled ${move.lastRoll}</div>` : ''}
+                <div class="text-2xl font-medium">${move.name}</div>
+                <div class="text-emerald-400 font-mono">${move.dice}</div>
             </div>
             <div class="flex gap-3">
                 <button onclick="rollMove(${i}); event.stopImmediatePropagation()" 
-                        class="px-10 py-6 border-4 border-[#22ff88] hover:bg-[#22ff88] hover:text-black text-xl">ROLL</button>
+                        class="bg-zinc-800 hover:bg-zinc-700 px-8 py-4 rounded-xl">ROLL</button>
                 ${editMode ? `
                 <button onclick="removeMove(${i}); event.stopImmediatePropagation()" 
-                        class="px-6 py-6 border-4 border-red-500 hover:bg-red-500 hover:text-black">✕</button>` : ''}
+                        class="bg-red-900 hover:bg-red-800 px-5 py-4 rounded-xl">
+                    <i class="fa-solid fa-trash"></i>
+                </button>` : ''}
             </div>
         `;
         container.appendChild(div);
@@ -333,23 +334,25 @@ function renderTables() {
     customTables.forEach((table, idx) => {
         const div = document.createElement('div');
         div.className = 'list-item';
-        let last = '';
-        if (table.lastRoll) {
-            last = `<div class="last-roll">ROLL ${table.lastRoll} → ${table.entries[table.lastRoll-1] || ''}</div>`;
+        let lastHTML = '';
+        if (table.lastRoll !== undefined && table.lastRoll !== null) {
+            lastHTML = `<div class="last-roll">Roll ${table.lastRoll} — ${table.entries[table.lastRoll-1] || '(empty)'}</div>`;
         }
         div.innerHTML = `
             <div class="flex justify-between items-center">
                 <div>
-                    ${last}
-                    <div class="text-3xl">${table.name}</div>
-                    <div class="text-[#22ff88]">(${table.sides} entries)</div>
+                    ${lastHTML}
+                    <div class="text-xl font-medium">${table.name}</div>
+                    <div class="text-zinc-400">(${table.sides} entries)</div>
                 </div>
                 <div class="flex gap-3">
                     <button onclick="rollTable(${idx}); event.stopImmediatePropagation()" 
-                            class="px-10 py-6 border-4 border-[#22ff88] hover:bg-[#22ff88] hover:text-black">ROLL</button>
+                            class="bg-zinc-800 hover:bg-zinc-700 px-8 py-4 rounded-xl">ROLL</button>
                     ${editMode ? `
                     <button onclick="deleteTable(${idx}); event.stopImmediatePropagation()" 
-                            class="px-6 py-6 border-4 border-red-500 hover:bg-red-500 hover:text-black">✕</button>` : ''}
+                            class="bg-red-900 hover:bg-red-800 px-5 py-4 rounded-xl">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>` : ''}
                 </div>
             </div>
         `;
@@ -364,7 +367,7 @@ function rollTable(idx) {
     renderTables();
 }
 
-// ====================== CREATURES ======================
+// ====================== CREATURE FUNCTIONS ======================
 function addCreature() {
     const name = prompt("Creature Name:");
     if (!name) return;
@@ -386,27 +389,28 @@ function addMoveToCurrent() {
 }
 
 function removeMove(i) {
-    if (confirm("Delete move?")) {
+    if (confirm("Delete this move?")) {
         creatures[currentCreatureIndex].moves.splice(i, 1);
         renderMoves();
     }
 }
 
-// ====================== TABLES ======================
+// ====================== TABLE FUNCTIONS ======================
 function addCustomTable() {
     const name = prompt("Table Name:");
     if (!name) return;
     const sides = parseInt(prompt("Number of entries?", "8")) || 8;
     const entries = [];
     for (let i = 1; i <= sides; i++) {
-        entries.push(prompt(`Entry ${i}:`) || "(empty)");
+        const entry = prompt(`Entry ${i}/${sides}:`) || "(empty)";
+        entries.push(entry);
     }
     customTables.push({name, sides, entries, lastRoll: null});
     renderTables();
 }
 
 function deleteTable(idx) {
-    if (confirm("Delete table?")) {
+    if (confirm("Delete this table?")) {
         customTables.splice(idx, 1);
         renderTables();
     }
@@ -414,14 +418,15 @@ function deleteTable(idx) {
 
 // ====================== SAVE / LOAD ======================
 function saveEncounter() {
-    localStorage.setItem('rollpad_retro', JSON.stringify({creatures, customTables}));
-    alert("✅ Saved!");
+    localStorage.setItem('rollpad_modern', JSON.stringify({creatures, customTables}));
+    alert("✅ Encounter saved");
 }
 
 function loadEncounterPrompt() {
-    const data = localStorage.getItem('rollpad_retro');
-    if (!data) return alert("No save found");
+    const data = localStorage.getItem('rollpad_modern');
+    if (!data) return alert("No saved encounter found");
     if (!confirm("Load saved encounter?")) return;
+    
     const parsed = JSON.parse(data);
     creatures = parsed.creatures || [];
     customTables = parsed.customTables || [];
@@ -442,9 +447,9 @@ function importJSON() {
                 customTables = data.customTables || [];
                 currentCreatureIndex = creatures.length ? 0 : -1;
                 updateUI();
-                alert("✅ Imported successfully");
+                alert("✅ JSON imported successfully");
             } catch(err) {
-                alert("Invalid JSON");
+                alert("Invalid JSON file");
             }
         };
         reader.readAsText(e.target.files[0]);
@@ -462,11 +467,11 @@ function exportJSON() {
 }
 
 function clearAllData() {
-    if (confirm("Clear everything?")) {
+    if (confirm("Erase everything?")) {
         creatures = [];
         customTables = [];
         currentCreatureIndex = -1;
-        localStorage.removeItem('rollpad_retro');
+        localStorage.removeItem('rollpad_modern');
         updateUI();
     }
 }
