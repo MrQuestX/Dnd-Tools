@@ -3,136 +3,328 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ROLLPAD • Combat</title>
+    <title>ROLLPAD • ARCANE EDITION</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
-        body { font-family: 'Inter', system-ui, sans-serif; background: #0a0a0a; color: #e5e5e5; }
-        .window { background: #1a1a1a; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.7); overflow: hidden; height: 100vh; display: flex; }
-        .sidebar { background: #111; border-right: 1px solid #333; width: 340px; }
-        .creature-item { padding: 12px 16px; cursor: pointer; transition: all 0.2s; border-bottom: 1px solid #222; }
-        .creature-item:hover { background: #1a1a1a; }
-        .creature-item.active { background: #22c55e; color: black; }
-        .creature-item.dead { opacity: 0.55; }
-        .main { flex: 1; overflow-y: auto; padding: 24px; background: #141414; }
-        .card { background: #1f1f1f; border-radius: 10px; padding: 20px; margin-bottom: 20px; border: 1px solid #333; }
-        .list-item { background: #1f1f1f; border: 1px solid #333; border-radius: 8px; padding: 16px; margin-bottom: 12px; }
-        .last-roll { background: #22c55e; color: #000; padding: 6px 12px; border-radius: 6px; font-weight: 600; margin-bottom: 10px; }
-        .condition-tag { font-size: 0.75rem; padding: 2px 8px; border-radius: 9999px; background: #444; }
+        @import url('https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Inter:wght@400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: radial-gradient(circle at center, #1a0f08 0%, #0a0503 100%);
+            color: #e5d5b8;
+            background-image: 
+                linear-gradient(rgba(139, 69, 19, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(139, 69, 19, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        
+        .window {
+            background: #1a140f;
+            border: 4px solid #8b4513;
+            border-image: linear-gradient(#d4af37, #8b4513) 1;
+            border-radius: 16px;
+            box-shadow: 
+                0 0 60px rgba(139, 69, 19, 0.6),
+                inset 0 0 80px rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        .window::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,215,0,0.08) 0%, transparent 70%);
+            pointer-events: none;
+            animation: arcanePulse 15s infinite ease-in-out;
+        }
+        
+        @keyframes arcanePulse {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+        
+        .title-bar {
+            background: linear-gradient(to right, #3a2a1f, #1c140f);
+            padding: 14px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #d4af37;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+        }
+        
+        .main {
+            flex: 1;
+            overflow-y: auto;
+            padding: 28px;
+            background: #120c08;
+            display: flex;
+            gap: 24px;
+        }
+        
+        .sidebar {
+            width: 280px;
+            background: #1f1810;
+            border-right: 3px solid #8b4513;
+            border-radius: 12px;
+            padding: 16px;
+            overflow-y: auto;
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.6);
+        }
+        
+        .creature-list {
+            max-height: 520px;
+        }
+        
+        .creature-item {
+            background: #2a2118;
+            border: 2px solid #5c4033;
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .creature-item:hover {
+            border-color: #d4af37;
+            transform: translateX(8px) scale(1.02);
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+        }
+        
+        .creature-item.active {
+            border-color: #ffd700;
+            background: linear-gradient(135deg, #3a2a1f, #2a2118);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
+        }
+        
+        .creature-item::after {
+            content: '⚔️';
+            position: absolute;
+            right: 12px;
+            top: 12px;
+            opacity: 0.2;
+            font-size: 24px;
+            transition: all 0.3s;
+        }
+        
+        .creature-item:hover::after {
+            opacity: 0.6;
+            transform: rotate(20deg);
+        }
+        
+        .card {
+            background: linear-gradient(145deg, #2a2118, #1a140f);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 24px;
+            border: 2px solid #5c4033;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        h1, h2, h3 {
+            font-family: 'UnifrakturCook', cursive;
+            letter-spacing: 2px;
+        }
+        
+        .text-4xl {
+            font-size: 2.25rem;
+        }
+        
+        input, button {
+            font-size: 1.1rem;
+        }
+        
+        .list-item {
+            background: #2a2118;
+            border: 2px solid #5c4033;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 16px;
+            transition: all 0.3s;
+        }
+        
+        .list-item:hover {
+            border-color: #d4af37;
+            transform: translateY(-4px);
+            box-shadow: 0 15px 25px rgba(139, 69, 19, 0.4);
+        }
+        
+        .last-roll {
+            background: linear-gradient(#22c55e, #16a34a);
+            color: #111;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: inline-block;
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+            animation: rollPop 0.6s ease;
+        }
+        
+        @keyframes rollPop {
+            0% { transform: scale(0.6) rotate(-12deg); }
+            60% { transform: scale(1.15) rotate(8deg); }
+            100% { transform: scale(1) rotate(0); }
+        }
+        
+        button {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        button:hover {
+            transform: translateY(-3px) scale(1.05);
+        }
+        
+        .dice-roll {
+            animation: diceShake 0.8s ease;
+        }
+        
+        @keyframes diceShake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(15deg); }
+            75% { transform: rotate(-15deg); }
+        }
+        
+        .rune {
+            position: absolute;
+            font-size: 120px;
+            opacity: 0.03;
+            color: #d4af37;
+            pointer-events: none;
+            user-select: none;
+            z-index: 0;
+        }
     </style>
 </head>
 <body>
-<div class="window flex h-screen max-w-7xl mx-auto mt-4">
-
-    <!-- INITIATIVE SIDEBAR -->
-    <div class="sidebar flex flex-col">
-        <div class="p-5 border-b border-zinc-800">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-lg font-semibold flex items-center gap-2">
-                    <i class="fa-solid fa-list-ol text-emerald-400"></i> INITIATIVE
-                </h2>
-                <div class="flex items-center gap-3">
-                    <span class="text-sm">Round <span id="round-counter" class="font-mono text-xl text-emerald-400">1</span></span>
-                    <button onclick="nextRound()" class="px-4 py-1 bg-emerald-600 hover:bg-emerald-500 rounded-lg text-sm">Next Round</button>
-                </div>
-            </div>
-            <div class="flex gap-2">
-                <button onclick="rollAllInitiative()" class="flex-1 text-xs bg-zinc-800 hover:bg-zinc-700 py-2 rounded">Roll All</button>
-                <button onclick="sortByInitiative()" class="flex-1 text-xs bg-zinc-800 hover:bg-zinc-700 py-2 rounded">Sort</button>
+<div class="window max-w-7xl mx-auto mt-6 shadow-2xl">
+    <!-- Title Bar -->
+    <div class="title-bar">
+        <div class="flex items-center gap-4">
+            <i class="fa-solid fa-dice-d20 text-amber-400 text-4xl drop-shadow-lg"></i>
+            <div>
+                <h1 class="text-4xl font-bold tracking-widest text-amber-100">ROLLPAD</h1>
+                <p class="text-xs text-amber-400 -mt-1 tracking-[4px]">ARCANE EDITION</p>
             </div>
         </div>
-
-        <div id="creature-list" class="flex-1 overflow-y-auto"></div>
-
-        <div class="p-4 border-t border-zinc-800">
-            <button onclick="addCreature()" class="w-full bg-emerald-600 hover:bg-emerald-500 py-3 rounded-lg font-medium flex items-center justify-center gap-2">
-                <i class="fa-solid fa-plus"></i> NEW CREATURE
+        <div class="flex items-center gap-4">
+            <button onclick="toggleEditMode()" 
+                    class="px-6 py-3 bg-gradient-to-r from-amber-900 to-amber-950 hover:from-amber-800 hover:to-amber-900 border border-amber-400 rounded-xl flex items-center gap-3 text-lg font-medium shadow-inner">
+                <i class="fa-solid fa-pen-to-square"></i>
+                <span id="edit-status" class="font-mono tracking-widest">VIEW MODE</span>
             </button>
         </div>
     </div>
 
-    <!-- MAIN AREA -->
-    <div class="flex-1 flex flex-col">
-        <div class="bg-zinc-900 px-6 py-4 flex justify-between border-b border-zinc-800">
-            <h1 id="current-name" class="text-3xl font-bold">NO CREATURE SELECTED</h1>
-            <button onclick="toggleEditMode()" class="px-5 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg flex items-center gap-2">
-                <i class="fa-solid fa-pen"></i> <span id="edit-status">VIEW MODE</span>
+    <!-- Menu Bar -->
+    <div class="bg-[#1c140f] border-b border-amber-900 px-8 py-4 flex gap-3 flex-wrap shadow-inner">
+        <button onclick="addCreature()" 
+                class="menu-btn px-6 py-3 bg-gradient-to-b from-amber-700 to-amber-900 hover:from-amber-600 hover:to-amber-800 rounded-2xl flex items-center gap-3 text-lg font-medium border border-amber-400">
+            <i class="fa-solid fa-dragon"></i> SUMMON CREATURE
+        </button>
+        <button onclick="saveEncounter()" 
+                class="menu-btn px-6 py-3 bg-gradient-to-b from-emerald-800 to-emerald-950 hover:from-emerald-700 hover:to-emerald-900 rounded-2xl flex items-center gap-3 text-lg font-medium border border-emerald-400">
+            <i class="fa-solid fa-floppy-disk"></i> INSCRIBE
+        </button>
+        <button onclick="loadEncounterPrompt()" 
+                class="menu-btn px-6 py-3 bg-gradient-to-b from-sky-800 to-sky-950 hover:from-sky-700 hover:to-sky-900 rounded-2xl flex items-center gap-3 text-lg font-medium border border-sky-400">
+            <i class="fa-solid fa-book-open"></i> CONSULT TOMES
+        </button>
+        <button onclick="exportJSON()" 
+                class="menu-btn px-6 py-3 bg-gradient-to-b from-violet-800 to-violet-950 hover:from-violet-700 hover:to-violet-900 rounded-2xl flex items-center gap-3 text-lg font-medium border border-violet-400">
+            <i class="fa-solid fa-scroll"></i> SCROLL EXPORT
+        </button>
+        <button onclick="clearAllData()" 
+                class="menu-btn px-6 py-3 bg-gradient-to-b from-red-900 to-red-950 hover:from-red-800 hover:to-red-900 rounded-2xl flex items-center gap-3 text-lg font-medium border border-red-400 text-red-200">
+            <i class="fa-solid fa-skull"></i> BANISH ALL
+        </button>
+    </div>
+
+    <div class="main">
+        <!-- Creature Sidebar -->
+        <div class="sidebar">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-bold text-amber-100 flex items-center gap-3">
+                    <i class="fa-solid fa-users"></i> BESTIARY
+                </h3>
+                <div class="text-sm text-amber-400 font-mono" id="creature-count">0</div>
+            </div>
+            
+            <div id="creature-list" class="creature-list space-y-2"></div>
+            
+            <button onclick="addCreature()" 
+                    class="w-full mt-6 py-4 bg-gradient-to-r from-amber-600 to-orange-700 hover:from-amber-500 hover:to-orange-600 rounded-2xl text-xl font-bold border-2 border-amber-300 shadow-md">
+                + SUMMON NEW BEAST
             </button>
         </div>
 
-        <div class="bg-zinc-900 border-b border-zinc-800 px-6 py-3 flex gap-4 text-sm overflow-x-auto">
-            <button onclick="saveEncounter()" class="flex items-center gap-2 hover:text-emerald-400"><i class="fa-solid fa-floppy-disk"></i> SAVE</button>
-            <button onclick="loadEncounterPrompt()" class="flex items-center gap-2 hover:text-emerald-400"><i class="fa-solid fa-folder-open"></i> LOAD</button>
-            <button onclick="loadFromGitHub()" class="flex items-center gap-2 hover:text-sky-400"><i class="fa-solid fa-cloud-download-alt"></i> GITHUB</button>
-            <button onclick="exportJSON()" class="flex items-center gap-2 hover:text-emerald-400"><i class="fa-solid fa-file-export"></i> EXPORT</button>
-            <button onclick="clearAllData()" class="flex items-center gap-2 text-red-400 hover:text-red-300"><i class="fa-solid fa-trash"></i> CLEAR</button>
-        </div>
-
-        <div class="main">
-            <!-- Quick Stats -->
-            <div class="card grid grid-cols-3 gap-4" id="creature-stats">
-                <div>
-                    <label class="text-xs text-zinc-500">AC</label>
-                    <input id="stat-ac" type="number" class="w-full bg-zinc-800 border border-zinc-700 rounded px-4 py-3 text-3xl text-center" onchange="updateCurrentStats()">
-                </div>
-                <div>
-                    <label class="text-xs text-zinc-500">HP</label>
-                    <div class="flex gap-2">
-                        <input id="stat-hp" type="number" class="flex-1 bg-zinc-800 border border-zinc-700 rounded px-4 py-3 text-3xl text-center" onchange="updateCurrentStats()">
-                        <span class="text-3xl text-zinc-500 self-center">/</span>
-                        <input id="stat-maxhp" type="number" class="flex-1 bg-zinc-800 border border-zinc-700 rounded px-4 py-3 text-3xl text-center" onchange="updateCurrentStats()">
-                    </div>
-                </div>
-                <div>
-                    <label class="text-xs text-zinc-500">Initiative</label>
-                    <input id="stat-init" type="number" class="w-full bg-zinc-800 border border-zinc-700 rounded px-4 py-3 text-3xl text-center" onchange="updateCurrentStats()">
+        <!-- Main Content Area -->
+        <div class="flex-1">
+            <div class="flex justify-between items-end mb-8">
+                <h2 id="current-name" class="text-5xl font-bold text-amber-100 tracking-widest drop-shadow-lg">NO CREATURE SELECTED</h2>
+                <div onclick="rollInitiative()" 
+                     class="cursor-pointer bg-gradient-to-br from-red-700 to-rose-900 hover:from-red-600 hover:to-rose-800 px-8 py-3 rounded-2xl text-xl font-bold flex items-center gap-3 border border-red-400">
+                    <i class="fa-solid fa-bolt"></i> ROLL INITIATIVE
                 </div>
             </div>
 
-            <!-- Concentration -->
-            <div class="card">
-                <label class="flex items-center gap-2 text-sm font-medium">
-                    <input type="checkbox" id="conc-toggle" onchange="toggleConcentration()">
-                    <span>Concentrating</span>
-                </label>
-                <input id="conc-spell" type="text" placeholder="Spell / Effect (e.g. Haste)" class="w-full mt-3 bg-zinc-800 border border-zinc-700 rounded px-4 py-3" onchange="updateConcentration()">
-            </div>
-
-            <!-- Conditions -->
-            <div class="card">
-                <h3 class="font-semibold mb-3">Conditions</h3>
-                <div id="condition-list" class="flex flex-wrap gap-2 mb-4"></div>
-                <div class="flex gap-2">
-                    <select id="common-condition" class="bg-zinc-800 border border-zinc-700 rounded px-3 py-2">
-                        <option value="">Add Common...</option>
-                        <option value="Blinded">Blinded</option>
-                        <option value="Poisoned">Poisoned</option>
-                        <option value="Prone">Prone</option>
-                        <option value="Restrained">Restrained</option>
-                        <option value="Stunned">Stunned</option>
-                        <option value="Paralyzed">Paralyzed</option>
-                        <option value="Invisible">Invisible</option>
-                        <option value="Frightened">Frightened</option>
-                    </select>
-                    <button onclick="addCommonCondition()" class="bg-zinc-700 hover:bg-zinc-600 px-5 py-2 rounded">Add</button>
-                    <button onclick="addCustomCondition()" class="bg-zinc-700 hover:bg-zinc-600 px-5 py-2 rounded">Custom</button>
+            <!-- Add Move Section -->
+            <div class="card" id="add-move-section">
+                <h3 class="text-2xl font-bold mb-5 flex items-center gap-4 text-amber-300">
+                    <i class="fa-solid fa-hand-fist"></i> INVOKE NEW MOVE
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <input type="text" id="move-name" placeholder="Arcane Strike" 
+                           class="px-6 py-5 bg-[#2a2118] border-2 border-amber-800 focus:border-amber-400 rounded-2xl text-xl placeholder:text-amber-700">
+                    <input type="text" id="move-dice" placeholder="6d8 + 5" 
+                           class="px-6 py-5 bg-[#2a2118] border-2 border-amber-800 focus:border-amber-400 rounded-2xl text-xl placeholder:text-amber-700 font-mono">
+                    <button onclick="addMoveToCurrent()" 
+                            class="bg-gradient-to-br from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-bold rounded-2xl text-xl py-5 shadow-lg">
+                        CAST MOVE
+                    </button>
                 </div>
             </div>
 
             <!-- Moves -->
-            <h3 class="text-lg font-semibold mb-4 flex items-center gap-2"><i class="fa-solid fa-swords"></i> MOVES</h3>
-            <div id="moves-list" class="space-y-3"></div>
+            <h3 class="text-2xl font-bold mb-6 mt-10 flex items-center gap-4 text-orange-300">
+                <i class="fa-solid fa-swords"></i> BATTLE REPERTOIRE
+            </h3>
+            <div id="moves-list" class="space-y-4"></div>
 
             <!-- Custom Tables -->
-            <div class="mt-12">
-                <div class="flex justify-between mb-4">
-                    <h3 class="text-lg font-semibold">Custom Tables</h3>
-                    <button onclick="addCustomTable()" class="bg-zinc-800 hover:bg-zinc-700 px-5 py-2 rounded-lg text-sm">+ NEW TABLE</button>
+            <div class="mt-16">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-bold flex items-center gap-4 text-sky-300">
+                        <i class="fa-solid fa-table-cells"></i> ARCANE TABLES
+                    </h3>
+                    <button onclick="addCustomTable()" 
+                            class="bg-gradient-to-r from-sky-700 to-cyan-800 hover:from-sky-600 hover:to-cyan-700 px-8 py-4 rounded-2xl text-lg font-bold flex items-center gap-3">
+                        <i class="fa-solid fa-plus"></i> NEW TABLE
+                    </button>
                 </div>
-                <div id="tables-container" class="space-y-3"></div>
+                <div id="tables-container" class="space-y-4"></div>
             </div>
         </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="bg-[#1c140f] text-amber-400 text-sm px-8 py-5 border-t border-amber-900 flex justify-between items-center font-mono">
+        <div class="flex items-center gap-6">
+            <div>✦ DUNGEONS & DRAGONS COMPANION ✦</div>
+            <div class="text-amber-500">v2.0 • Fantasy Edition</div>
+        </div>
+        <div id="edit-status-footer" class="font-bold tracking-widest">VIEW MODE</div>
     </div>
 </div>
 
@@ -142,199 +334,274 @@ let creatures = [];
 let currentCreatureIndex = -1;
 let customTables = [];
 let editMode = false;
-let currentRound = 1;
 
-// ====================== CORE FUNCTIONS ======================
-function rollDice(expr) { /* same as before */ 
-    let total = 0;
+// ====================== EDIT MODE ======================
+function toggleEditMode() {
+    editMode = !editMode;
+    const status = editMode ? "ARCANE EDIT MODE" : "VIEW MODE";
+    document.getElementById('edit-status').textContent = status;
+    document.getElementById('edit-status-footer').textContent = status;
+    updateUI();
+}
+
+// ====================== DICE ======================
+function rollDice(expr) {
+    let total = 0, rolls = [];
     const parts = expr.replace(/\s/g,'').match(/[+-]?\d+d\d+|[+-]?\d+/gi) || [];
     for (let part of parts) {
         if (part.includes('d')) {
             const sign = part.startsWith('-') ? -1 : 1;
-            const [count, sides] = part.replace(/^[+-]/,'').split('d').map(n => parseInt(n));
-            for (let i = 0; i < (count || 1); i++) total += sign * (Math.floor(Math.random() * sides) + 1);
+            const cleaned = part.replace(/^[+-]/,'');
+            const [count, sides] = cleaned.split('d').map(n => parseInt(n));
+            for (let i = 0; i < (count || 1); i++) {
+                const r = Math.floor(Math.random() * sides) + 1;
+                rolls.push(r);
+                total += sign * r;
+            }
         } else total += parseInt(part);
     }
-    return total || 0;
+    return { total: total || 0, details: rolls.join('+') + '=' + total };
 }
 
-function nextRound() {
-    currentRound++;
-    document.getElementById('round-counter').textContent = currentRound;
+// ====================== UI ======================
+function updateUI() {
+    document.getElementById('creature-count').textContent = creatures.length;
+    document.getElementById('current-name').textContent = 
+        currentCreatureIndex >= 0 ? creatures[currentCreatureIndex].name.toUpperCase() : "NO CREATURE SELECTED";
+    renderCreatureList();
+    renderMoves();
+    renderTables();
 }
 
 function renderCreatureList() {
     const container = document.getElementById('creature-list');
     container.innerHTML = '';
-
-    creatures.forEach((c, i) => {
-        const isDead = c.hp <= 0;
+    
+    creatures.forEach((creature, idx) => {
         const div = document.createElement('div');
-        div.className = `creature-item flex items-center gap-3 ${i === currentCreatureIndex ? 'active' : ''} ${isDead ? 'dead' : ''}`;
-        div.draggable = true;
-        div.dataset.index = i;
-
-        const conds = c.conditions ? c.conditions.map(con => `<span class="condition-tag">${con}</span>`).join(' ') : '';
-        
+        div.className = `creature-item flex items-center justify-between ${idx === currentCreatureIndex ? 'active' : ''}`;
         div.innerHTML = `
-            <div class="w-8 text-center font-mono text-xl">${c.initiative || 0}</div>
-            <div class="flex-1 min-w-0">
-                <div class="font-medium truncate">${c.name}</div>
-                <div class="text-xs text-zinc-400">AC ${c.ac} • HP ${c.hp}/${c.maxHp}</div>
-                ${c.concentrating ? `<div class="text-xs text-sky-400">★ ${c.concentrating}</div>` : ''}
-                <div class="flex flex-wrap gap-1 mt-1">${conds}</div>
+            <div class="font-bold text-xl">${creature.name}</div>
+            <div class="text-amber-400 text-sm font-mono">${creature.moves.length} moves</div>
+        `;
+        div.onclick = () => {
+            currentCreatureIndex = idx;
+            updateUI();
+        };
+        container.appendChild(div);
+    });
+    
+    if (creatures.length === 0) {
+        container.innerHTML = `<div class="text-center py-12 text-amber-500/60 italic">Your bestiary is empty...</div>`;
+    }
+}
+
+// ====================== MOVES ======================
+function renderMoves() {
+    const container = document.getElementById('moves-list');
+    container.innerHTML = '';
+    if (currentCreatureIndex < 0) return;
+
+    creatures[currentCreatureIndex].moves.forEach((move, i) => {
+        const div = document.createElement('div');
+        div.className = 'list-item flex items-center justify-between';
+        div.innerHTML = `
+            <div class="flex-1">
+                ${move.lastRoll !== undefined ? `<div class="last-roll">Rolled ${move.lastRoll}</div>` : ''}
+                <strong class="text-2xl">${move.name}</strong><br>
+                <span class="text-emerald-400 font-mono text-xl">${move.dice}</span>
             </div>
-            <div class="flex gap-1">
-                <button onclick="event.stopImmediatePropagation(); damage(${i}, -5)" class="w-7 h-7 bg-emerald-900 hover:bg-emerald-700 rounded text-xs">+5</button>
-                <button onclick="event.stopImmediatePropagation(); damage(${i}, 5)" class="w-7 h-7 bg-red-900 hover:bg-red-700 rounded text-xs">-5</button>
+            <div class="flex gap-3">
+                <button onclick="rollMove(${i}); event.stopImmediatePropagation()" 
+                        class="bg-gradient-to-br from-zinc-700 to-zinc-900 hover:from-amber-600 hover:to-amber-700 px-8 py-4 rounded-2xl text-xl">
+                    <i class="fa-solid fa-dice-d20"></i> ROLL
+                </button>
+                ${editMode ? `
+                <button onclick="removeMove(${i}); event.stopImmediatePropagation()" 
+                        class="bg-red-900 hover:bg-red-800 px-6 py-4 rounded-2xl">
+                    <i class="fa-solid fa-trash"></i>
+                </button>` : ''}
             </div>
         `;
-        
-        div.onclick = () => selectCreature(i);
-        // drag & drop logic (same as before)
-        div.addEventListener('dragstart', e => e.dataTransfer.setData('text/plain', i));
-        div.addEventListener('dragover', e => e.preventDefault());
-        div.addEventListener('drop', e => {
-            e.preventDefault();
-            const from = parseInt(e.dataTransfer.getData('text/plain'));
-            const to = parseInt(div.dataset.index);
-            if (from !== to) {
-                const [moved] = creatures.splice(from, 1);
-                creatures.splice(to, 0, moved);
-                renderCreatureList();
-            }
-        });
         container.appendChild(div);
     });
 }
 
-// ====================== CREATURE MANAGEMENT ======================
-function selectCreature(i) {
-    currentCreatureIndex = i;
-    updateUI();
-}
-
-function addCreature() {
-    const name = prompt("Creature Name:");
-    if (!name) return;
-    creatures.push({
-        name: name.trim(),
-        ac: 13, hp: 20, maxHp: 20, initiative: 10,
-        conditions: [],
-        concentrating: null,
-        moves: []
-    });
-    selectCreature(creatures.length - 1);
-}
-
-function damage(i, amount) {
-    creatures[i].hp = Math.max(0, Math.min(creatures[i].maxHp, creatures[i].hp - amount));
-    renderCreatureList();
-    if (i === currentCreatureIndex) updateUI();
-}
-
-function updateCurrentStats() {
-    if (currentCreatureIndex < 0) return;
-    const c = creatures[currentCreatureIndex];
-    c.ac = parseInt(document.getElementById('stat-ac').value) || 10;
-    c.maxHp = parseInt(document.getElementById('stat-maxhp').value) || 10;
-    c.hp = parseInt(document.getElementById('stat-hp').value) || c.hp;
-    c.initiative = parseInt(document.getElementById('stat-init').value) || 0;
-    renderCreatureList();
-}
-
-// ====================== CONCENTRATION & CONDITIONS ======================
-function toggleConcentration() {
-    if (currentCreatureIndex < 0) return;
-    const c = creatures[currentCreatureIndex];
-    c.concentrating = document.getElementById('conc-toggle').checked ? (c.concentrating || "") : null;
-    updateUI();
-}
-
-function updateConcentration() {
-    if (currentCreatureIndex < 0) return;
-    const c = creatures[currentCreatureIndex];
-    const spell = document.getElementById('conc-spell').value.trim();
-    if (c.concentrating !== null) c.concentrating = spell || "Concentration";
-    updateUI();
-}
-
-function addCommonCondition() {
-    const sel = document.getElementById('common-condition');
-    if (!sel.value || currentCreatureIndex < 0) return;
-    const c = creatures[currentCreatureIndex];
-    if (!c.conditions.includes(sel.value)) c.conditions.push(sel.value);
-    updateUI();
-}
-
-function addCustomCondition() {
-    if (currentCreatureIndex < 0) return;
-    const cond = prompt("Enter custom condition:");
-    if (!cond) return;
-    const c = creatures[currentCreatureIndex];
-    if (!c.conditions.includes(cond)) c.conditions.push(cond);
-    updateUI();
-}
-
-function removeCondition(cond) {
-    if (currentCreatureIndex < 0) return;
-    const c = creatures[currentCreatureIndex];
-    c.conditions = c.conditions.filter(c => c !== cond);
-    updateUI();
-}
-
-// ====================== UI UPDATE ======================
-function updateUI() {
-    renderCreatureList();
-    document.getElementById('round-counter').textContent = currentRound;
-
-    if (currentCreatureIndex < 0) {
-        document.getElementById('current-name').textContent = "NO CREATURE SELECTED";
-        return;
-    }
-
-    const c = creatures[currentCreatureIndex];
-    document.getElementById('current-name').textContent = c.name.toUpperCase();
-
-    document.getElementById('stat-ac').value = c.ac || 10;
-    document.getElementById('stat-hp').value = c.hp || 0;
-    document.getElementById('stat-maxhp').value = c.maxHp || 10;
-    document.getElementById('stat-init').value = c.initiative || 0;
-
-    // Concentration
-    const concToggle = document.getElementById('conc-toggle');
-    concToggle.checked = !!c.concentrating;
-    document.getElementById('conc-spell').value = c.concentrating || "";
-
-    // Conditions
-    const condContainer = document.getElementById('condition-list');
-    condContainer.innerHTML = c.conditions.map(cond => `
-        <span class="condition-tag flex items-center gap-1">
-            ${cond}
-            <button onclick="removeCondition('${cond}')" class="text-red-400 hover:text-red-300">×</button>
-        </span>
-    `).join('');
-
+function rollMove(i) {
+    const move = creatures[currentCreatureIndex].moves[i];
+    const result = rollDice(move.dice);
+    move.lastRoll = result.total;
+    
+    // Visual feedback
+    const buttons = document.querySelectorAll('#moves-list button');
+    if (buttons[i]) buttons[i].classList.add('dice-roll');
+    setTimeout(() => {
+        if (buttons[i]) buttons[i].classList.remove('dice-roll');
+    }, 800);
+    
     renderMoves();
+}
+
+function rollInitiative() {
+    if (currentCreatureIndex < 0) return;
+    const initRoll = Math.floor(Math.random() * 20) + 1;
+    alert(`🎲 Initiative Roll!\n\n${creatures[currentCreatureIndex].name} rolled a ${initRoll}!`);
+}
+
+// ====================== TABLES ======================
+function renderTables() {
+    const container = document.getElementById('tables-container');
+    container.innerHTML = '';
+
+    customTables.forEach((table, idx) => {
+        const div = document.createElement('div');
+        div.className = 'list-item flex items-center justify-between';
+        
+        let lastHTML = '';
+        if (table.lastRoll !== undefined && table.lastRoll !== null) {
+            lastHTML = `<div class="last-roll">${table.lastRoll} — ${table.entries[table.lastRoll-1] || '(empty)'}</div>`;
+        }
+
+        div.innerHTML = `
+            <div>
+                ${lastHTML}
+                <strong class="text-2xl">${table.name}</strong> 
+                <span class="text-amber-400 text-base">(${table.sides} entries)</span>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="rollTable(${idx}); event.stopImmediatePropagation()" 
+                        class="bg-gradient-to-br from-zinc-700 to-zinc-900 hover:from-sky-600 hover:to-sky-700 px-8 py-4 rounded-2xl text-xl">
+                    <i class="fa-solid fa-dice"></i> ROLL
+                </button>
+                ${editMode ? `
+                <button onclick="deleteTable(${idx}); event.stopImmediatePropagation()" 
+                        class="bg-red-900 hover:bg-red-800 px-6 py-4 rounded-2xl">
+                    <i class="fa-solid fa-trash"></i>
+                </button>` : ''}
+            </div>
+        `;
+        container.appendChild(div);
+    });
+}
+
+function rollTable(idx) {
+    const table = customTables[idx];
+    const roll = Math.floor(Math.random() * table.sides) + 1;
+    table.lastRoll = roll;
     renderTables();
 }
 
-// ====================== MOVES, TABLES, SAVE/LOAD (unchanged from previous) ======================
-// ... [All the previous move, table, save, load, github functions remain the same] ...
+// ====================== CREATURE FUNCTIONS ======================
+function addCreature() {
+    const name = prompt("Enter creature name (e.g. Ancient Red Dragon):");
+    if (!name) return;
+    creatures.push({ 
+        name: name.trim(), 
+        moves: [] 
+    });
+    currentCreatureIndex = creatures.length - 1;
+    updateUI();
+}
 
-// For brevity I didn't repeat them all here — they are identical to the last version I gave you.
-// Just paste the full script from the previous message and merge the new parts above.
+function addMoveToCurrent() {
+    if (currentCreatureIndex < 0) return alert("Select a creature first");
+    
+    const name = document.getElementById('move-name').value.trim();
+    const dice = document.getElementById('move-dice').value.trim();
+    
+    if (!name || !dice) return alert("Both name and dice expression required");
+    
+    creatures[currentCreatureIndex].moves.push({name, dice});
+    document.getElementById('move-name').value = '';
+    document.getElementById('move-dice').value = '';
+    renderMoves();
+}
+
+function removeMove(i) {
+    if (confirm("Banish this move?")) {
+        creatures[currentCreatureIndex].moves.splice(i, 1);
+        renderMoves();
+    }
+}
+
+// ====================== TABLE FUNCTIONS ======================
+function addCustomTable() {
+    const name = prompt("Table Name (e.g. Random Treasure):");
+    if (!name) return;
+    const sides = parseInt(prompt("How many entries on this table?", "10")) || 10;
+    const entries = [];
+    for (let i = 1; i <= sides; i++) {
+        const entry = prompt(`Entry ${i}/${sides}:`) || "(empty)";
+        entries.push(entry);
+    }
+    customTables.push({name, sides, entries, lastRoll: null});
+    renderTables();
+}
+
+function deleteTable(idx) {
+    if (confirm("Destroy this table?")) {
+        customTables.splice(idx, 1);
+        renderTables();
+    }
+}
+
+// ====================== SAVE / LOAD ======================
+function saveEncounter() {
+    localStorage.setItem('rollpad_arcane', JSON.stringify({creatures, customTables}));
+    alert("✅ Your encounter has been inscribed in the eternal tomes.");
+}
+
+function loadEncounterPrompt() {
+    const data = localStorage.getItem('rollpad_arcane');
+    if (!data) return alert("No saved encounters found.");
+    if (!confirm("Load previous encounter from the archives?")) return;
+    
+    const parsed = JSON.parse(data);
+    creatures = parsed.creatures || [];
+    customTables = parsed.customTables || [];
+    currentCreatureIndex = creatures.length ? 0 : -1;
+    updateUI();
+}
+
+function exportJSON() {
+    const data = {creatures, customTables};
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'rollpad_bestiary.json';
+    a.click();
+}
+
+function clearAllData() {
+    if (confirm("Erase ALL creatures and tables from existence?")) {
+        creatures = [];
+        customTables = [];
+        currentCreatureIndex = -1;
+        localStorage.removeItem('rollpad_arcane');
+        updateUI();
+    }
+}
 
 // ====================== INIT ======================
 updateUI();
+
 if (creatures.length === 0) {
-    creatures = [{
-        name: "GOBLIN",
-        ac: 13, hp: 7, maxHp: 7, initiative: 14,
-        conditions: ["Poisoned"],
-        concentrating: null,
-        moves: [{name: "Bite", dice: "1d6+2"}, {name: "Scratch", dice: "1d4"}]
-    }];
+    creatures = [
+        {
+            name: "GOBLIN SHAMAN", 
+            moves: [
+                {name: "Fire Bolt", dice: "3d6+2"},
+                {name: "Hex", dice: "2d8"}
+            ]
+        },
+        {
+            name: "ANCIENT RED DRAGON", 
+            moves: [
+                {name: "Fire Breath", dice: "18d6"},
+                {name: "Claw", dice: "4d10+8"}
+            ]
+        }
+    ];
     currentCreatureIndex = 0;
     updateUI();
 }
