@@ -2,164 +2,198 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ROLLPAD 1997</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROLLPAD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
-        
-        :root { --bg: #c0c0c0; --fg: #000000; --accent: #000080; }
-        
-        * { box-sizing: border-box; margin:0; padding:0; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
         
         body {
-            font-family: 'VT323', monospace;
-            background: var(--bg);
-            color: var(--fg);
-            font-size: 18px;
-            line-height: 1.2;
-            padding: 4px;
-            height: 100vh;
-            overflow: hidden;
+            font-family: 'Inter', system-ui, sans-serif;
+            background: #0f0f0f;
+            color: #e5e5e5;
         }
         
         .window {
-            border: 3px solid #dfdfdf;
-            border-top-color: #ffffff;
-            border-left-color: #ffffff;
-            background: #c0c0c0;
-            box-shadow: 2px 2px 0 #808080;
-            height: 100%;
+            background: #1a1a1a;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+            overflow: hidden;
+            height: 100vh;
             display: flex;
             flex-direction: column;
         }
         
         .title-bar {
-            background: var(--accent);
-            color: white;
-            padding: 4px 8px;
-            font-weight: bold;
+            background: #111111;
+            padding: 12px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-        }
-        
-        .menu-bar {
-            background: #c0c0c0;
-            border-bottom: 2px solid #808080;
-            padding: 2px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2px;
-        }
-        
-        .menu-btn {
-            padding: 4px 12px;
-            border: 2px solid #dfdfdf;
-            border-top-color: #fff;
-            border-left-color: #fff;
-            background: #c0c0c0;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        
-        .menu-btn:active {
-            border: 2px solid #808080;
-            border-top-color: #000;
-            border-left-color: #000;
+            border-bottom: 1px solid #333;
         }
         
         .main {
             flex: 1;
-            padding: 8px;
             overflow-y: auto;
-            background: #008080;
-            color: white;
+            padding: 24px;
+            background: #141414;
         }
         
-        input, button {
-            font-family: 'VT323', monospace;
-            font-size: 18px;
-            padding: 6px 8px;
-            border: 2px solid #dfdfdf;
-            border-top-color: #fff;
-            border-left-color: #fff;
-            background: #fff;
+        .card {
+            background: #1f1f1f;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 20px;
+            border: 1px solid #333;
         }
         
-        button:active {
-            border: 2px solid #808080;
-            border-top-color: #000;
-            border-left-color: #000;
+        button {
+            transition: all 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-1px);
         }
         
         .list-item {
-            background: #c0c0c0;
-            border: 2px solid #dfdfdf;
-            border-top-color: #fff;
-            border-left-color: #fff;
-            padding: 8px;
-            margin-bottom: 10px;
+            background: #1f1f1f;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 12px;
+            transition: all 0.2s;
+        }
+        
+        .list-item:hover {
+            border-color: #555;
+            background: #252525;
         }
         
         .last-roll {
-            background: #000080;
-            color: #ffff00;
-            border: 2px solid #fff;
-            padding: 6px 10px;
+            background: #22c55e;
+            color: #000;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 600;
             margin-bottom: 8px;
-            font-size: 17px;
-            line-height: 1.3;
+            display: inline-block;
         }
         
-        .drag-handle { cursor: move; margin-right: 8px; font-size: 20px; }
+        input {
+            background: #252525;
+            border: 1px solid #444;
+            color: white;
+            border-radius: 6px;
+        }
         
-        .add-section { border: 2px solid #fff; padding: 8px; background: #c0c0c0; margin: 12px 0; display: none; }
-        .edit-mode .add-section,
-        .edit-mode .delete-btn { display: block !important; }
+        .menu-btn {
+            background: #222;
+            border: 1px solid #444;
+            color: #ddd;
+        }
+        
+        .menu-btn:hover {
+            background: #333;
+            border-color: #666;
+        }
     </style>
 </head>
 <body>
-
-<div class="window">
+<div class="window max-w-5xl mx-auto mt-4">
+    <!-- Title Bar -->
     <div class="title-bar">
-        <div>MR.QUEST'S ROLLPAD v1.97</div>
-        <button onclick="toggleEditMode()">✏️</button>
+        <div class="flex items-center gap-3">
+            <i class="fa-solid fa-dice-d20 text-emerald-400 text-2xl"></i>
+            <h1 class="text-xl font-semibold tracking-tight">ROLLPAD</h1>
+        </div>
+        <div class="flex items-center gap-4">
+            <button onclick="toggleEditMode()" 
+                    class="px-4 py-1.5 bg-zinc-800 hover:bg-zinc-700 rounded-lg flex items-center gap-2 text-sm">
+                <i class="fa-solid fa-pen"></i>
+                <span id="edit-status">VIEW MODE</span>
+            </button>
+        </div>
     </div>
 
-    <div class="menu-bar">
-        <div class="menu-btn" onclick="addCreature()">+ CREATURE</div>
-        <div class="menu-btn" onclick="saveEncounter()">💾 SAVE</div>
-        <div class="menu-btn" onclick="importJSON()">📥 IMPORT</div>
-        <div class="menu-btn" onclick="loadEncounterPrompt()">📂 LOAD</div>
-        <div class="menu-btn" onclick="exportJSON()">📤 EXPORT</div>
-        <div class="menu-btn" onclick="clearAllData()">🗑 CLEAR</div>
+    <!-- Menu Bar -->
+    <div class="bg-zinc-900 border-b border-zinc-800 px-6 py-3 flex gap-2 flex-wrap">
+        <button onclick="addCreature()" 
+                class="menu-btn px-5 py-2 rounded-lg flex items-center gap-2 text-sm font-medium">
+            <i class="fa-solid fa-plus"></i> NEW CREATURE
+        </button>
+        <button onclick="saveEncounter()" 
+                class="menu-btn px-5 py-2 rounded-lg flex items-center gap-2 text-sm font-medium">
+            <i class="fa-solid fa-floppy-disk"></i> SAVE
+        </button>
+        <button onclick="loadEncounterPrompt()" 
+                class="menu-btn px-5 py-2 rounded-lg flex items-center gap-2 text-sm font-medium">
+            <i class="fa-solid fa-folder-open"></i> LOAD
+        </button>
+        <button onclick="importJSON()" 
+                class="menu-btn px-5 py-2 rounded-lg flex items-center gap-2 text-sm font-medium">
+            <i class="fa-solid fa-file-import"></i> IMPORT
+        </button>
+        <button onclick="exportJSON()" 
+                class="menu-btn px-5 py-2 rounded-lg flex items-center gap-2 text-sm font-medium">
+            <i class="fa-solid fa-file-export"></i> EXPORT
+        </button>
+        <button onclick="clearAllData()" 
+                class="menu-btn px-5 py-2 rounded-lg flex items-center gap-2 text-sm font-medium text-red-400 hover:text-red-300">
+            <i class="fa-solid fa-trash"></i> CLEAR ALL
+        </button>
     </div>
 
-    <div class="main" id="main-area">
-        <h1>ROLLPAD 1997</h1>
-        <h2 id="current-name" style="color:#ffff00;">NO CREATURE SELECTED</h2>
-
-        <div class="add-section" id="add-move-section">
-            <h3>ADD NEW MOVE</h3>
-            <input type="text" id="move-name" placeholder="MOVE NAME" style="width:100%;margin-bottom:6px;">
-            <input type="text" id="move-dice" placeholder="1d20+5" style="width:100%;margin-bottom:6px;">
-            <button onclick="addMoveToCurrent()" style="width:100%;">ADD MOVE</button>
+    <!-- Main Content -->
+    <div class="main">
+        <div class="flex justify-between items-center mb-8">
+            <h2 id="current-name" class="text-3xl font-bold text-white">NO CREATURE SELECTED</h2>
+            <div class="text-sm text-zinc-500">
+                Creatures: <span id="creature-count" class="font-mono text-emerald-400">0</span>
+            </div>
         </div>
 
-        <h3 style="color:#ffff00;">MOVES</h3>
-        <div id="moves-list"></div>
-
-        <div class="add-section" id="add-table-section" style="margin-top:20px;">
-            <h3>ADD NEW TABLE</h3>
-            <button onclick="addCustomTable()" style="width:100%;">+ CREATE NEW TABLE</button>
+        <!-- Add Move Section -->
+        <div class="card" id="add-move-section">
+            <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-bolt text-yellow-400"></i> ADD NEW MOVE
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <input type="text" id="move-name" placeholder="Move Name (e.g. Fireball)" class="px-4 py-3 w-full">
+                <input type="text" id="move-dice" placeholder="Dice (e.g. 8d6+4)" class="px-4 py-3 w-full">
+                <button onclick="addMoveToCurrent()" 
+                        class="bg-emerald-600 hover:bg-emerald-500 text-white font-medium rounded-lg">
+                    ADD MOVE
+                </button>
+            </div>
         </div>
 
-        <h3 style="color:#ffff00; margin-top:20px;">CUSTOM TABLES</h3>
-        <div id="tables-container"></div>
+        <!-- Moves -->
+        <h3 class="text-lg font-semibold mb-4 mt-8 flex items-center gap-2">
+            <i class="fa-solid fa-swords text-orange-400"></i> MOVES
+        </h3>
+        <div id="moves-list" class="space-y-3"></div>
+
+        <!-- Custom Tables -->
+        <div class="mt-12">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold flex items-center gap-2">
+                    <i class="fa-solid fa-table text-sky-400"></i> CUSTOM TABLES
+                </h3>
+                <button onclick="addCustomTable()" 
+                        class="bg-zinc-800 hover:bg-zinc-700 px-5 py-2 rounded-lg text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-plus"></i> NEW TABLE
+                </button>
+            </div>
+            <div id="tables-container" class="space-y-3"></div>
+        </div>
     </div>
 
-    <div style="font-size:14px;padding:4px;background:#c0c0c0;border-top:2px solid #fff;">
-        CREATURES: <span id="creature-count">0</span> | <span id="edit-status">VIEW MODE</span>
+    <!-- Footer -->
+    <div class="bg-zinc-900 text-xs text-zinc-500 px-6 py-3 border-t border-zinc-800 flex justify-between">
+        <div>Modern Edition • Built for Tabletop</div>
+        <div id="edit-status-footer" class="font-mono">VIEW MODE</div>
     </div>
 </div>
 
@@ -173,8 +207,9 @@ let editMode = false;
 // ====================== EDIT MODE ======================
 function toggleEditMode() {
     editMode = !editMode;
-    document.getElementById('edit-status').textContent = editMode ? "EDIT MODE" : "VIEW MODE";
-    document.querySelector('.window').classList.toggle('edit-mode', editMode);
+    const status = editMode ? "EDIT MODE" : "VIEW MODE";
+    document.getElementById('edit-status').textContent = status;
+    document.getElementById('edit-status-footer').textContent = status;
     updateUI();
 }
 
@@ -213,26 +248,25 @@ function renderMoves() {
 
     creatures[currentCreatureIndex].moves.forEach((move, i) => {
         const div = document.createElement('div');
-        div.className = 'list-item';
-        div.draggable = editMode;
-        div.dataset.index = i;
-
+        div.className = 'list-item flex items-center justify-between';
         div.innerHTML = `
-            <div style="display:flex; width:100%; align-items:center;">
-                ${editMode ? `<span class="drag-handle">≡</span>` : ''}
-                <div style="flex:1">
-                    ${move.lastRoll !== undefined ? `<div class="last-roll">${move.lastRoll}</div>` : ''}
-                    <strong>${move.name}</strong><br>
-                    <span style="font-size:16px;">${move.dice}</span>
-                </div>
-                <div style="display:flex; gap:6px;">
-                    <button onclick="rollMove(${i})">ROLL</button>
-                    <button class="delete-btn" onclick="removeMove(${i})" style="background:#800000;color:white;display:${editMode?'inline-block':'none'};">X</button>
-                </div>
+            <div class="flex-1">
+                ${move.lastRoll !== undefined ? `<div class="last-roll">Rolled ${move.lastRoll}</div>` : ''}
+                <strong class="text-lg">${move.name}</strong><br>
+                <span class="text-emerald-400 font-mono">${move.dice}</span>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="rollMove(${i})" 
+                        class="bg-zinc-800 hover:bg-zinc-700 px-6 py-2 rounded-lg">
+                    <i class="fa-solid fa-dice"></i> ROLL
+                </button>
+                ${editMode ? `
+                <button onclick="removeMove(${i})" 
+                        class="bg-red-900 hover:bg-red-800 px-4 py-2 rounded-lg">
+                    <i class="fa-solid fa-trash"></i>
+                </button>` : ''}
             </div>
         `;
-
-        if (editMode) addDragHandlers(div, i, creatures[currentCreatureIndex].moves, renderMoves);
         container.appendChild(div);
     });
 }
@@ -241,8 +275,7 @@ function rollMove(i) {
     const move = creatures[currentCreatureIndex].moves[i];
     const result = rollDice(move.dice);
     move.lastRoll = result.total;
-
-    renderMoves(); // update the last roll display
+    renderMoves();
 }
 
 // ====================== TABLES ======================
@@ -252,31 +285,30 @@ function renderTables() {
 
     customTables.forEach((table, idx) => {
         const div = document.createElement('div');
-        div.className = 'list-item';
-        div.draggable = editMode;
-        div.dataset.index = idx;
-
+        div.className = 'list-item flex items-center justify-between';
+        
         let lastHTML = '';
         if (table.lastRoll !== undefined && table.lastRoll !== null) {
-            const entry = table.entries[table.lastRoll - 1] || '(empty)';
-            lastHTML = `<div class="last-roll">${table.lastRoll} — ${entry}</div>`;
+            lastHTML = `<div class="last-roll">${table.lastRoll} — ${table.entries[table.lastRoll-1] || '(empty)'}</div>`;
         }
 
         div.innerHTML = `
-            <div style="display:flex; width:100%; align-items:center;">
-                ${editMode ? `<span class="drag-handle">≡</span>` : ''}
-                <div style="flex:1">
-                    ${lastHTML}
-                    <strong>${table.name} (d${table.sides})</strong>
-                </div>
-                <div style="display:flex; gap:6px;">
-                    <button onclick="rollTable(${idx})">ROLL</button>
-                    <button class="delete-btn" onclick="deleteTable(${idx})" style="background:#800000;color:white;display:${editMode?'inline-block':'none'};">X</button>
-                </div>
+            <div>
+                ${lastHTML}
+                <strong>${table.name}</strong> <span class="text-zinc-500 text-sm">(${table.sides} entries)</span>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="rollTable(${idx})" 
+                        class="bg-zinc-800 hover:bg-zinc-700 px-6 py-2 rounded-lg">
+                    <i class="fa-solid fa-dice"></i> ROLL
+                </button>
+                ${editMode ? `
+                <button onclick="deleteTable(${idx})" 
+                        class="bg-red-900 hover:bg-red-800 px-4 py-2 rounded-lg">
+                    <i class="fa-solid fa-trash"></i>
+                </button>` : ''}
             </div>
         `;
-
-        if (editMode) addDragHandlers(div, idx, customTables, renderTables);
         container.appendChild(div);
     });
 }
@@ -288,45 +320,22 @@ function rollTable(idx) {
     renderTables();
 }
 
-// ====================== DRAG & DROP ======================
-function addDragHandlers(el, index, array, refreshFn) {
-    el.addEventListener('dragstart', e => {
-        e.dataTransfer.setData('text/plain', index);
-        el.style.opacity = '0.5';
-    });
-    el.addEventListener('dragover', e => e.preventDefault());
-    el.addEventListener('drop', e => {
-        e.preventDefault();
-        const from = parseInt(e.dataTransfer.getData('text/plain'));
-        const to = parseInt(el.dataset.index);
-        if (from !== to) {
-            const [moved] = array.splice(from, 1);
-            array.splice(to, 0, moved);
-            refreshFn();
-        }
-    });
-    el.addEventListener('dragend', () => el.style.opacity = '1');
-}
-
-// ====================== CREATURE / MOVE / TABLE FUNCTIONS ======================
+// ====================== CREATURE FUNCTIONS ======================
 function addCreature() {
-    const name = prompt("ENTER CREATURE NAME:");
+    const name = prompt("Creature Name:");
     if (!name) return;
     creatures.push({ name: name.trim(), moves: [] });
-    updateUI();
-    selectCreature(creatures.length - 1);
-}
-
-function selectCreature(i) {
-    currentCreatureIndex = i;
+    currentCreatureIndex = creatures.length - 1;
     updateUI();
 }
 
 function addMoveToCurrent() {
-    if (currentCreatureIndex < 0) return alert("SELECT A CREATURE FIRST");
+    if (currentCreatureIndex < 0) return alert("Select a creature first");
+    
     const name = document.getElementById('move-name').value.trim();
     const dice = document.getElementById('move-dice').value.trim();
-    if (!name || !dice) return alert("NAME AND DICE REQUIRED");
+    
+    if (!name || !dice) return alert("Name and dice expression required");
     
     creatures[currentCreatureIndex].moves.push({name, dice});
     document.getElementById('move-name').value = '';
@@ -335,26 +344,28 @@ function addMoveToCurrent() {
 }
 
 function removeMove(i) {
-    if (confirm("DELETE THIS MOVE?")) {
+    if (confirm("Delete this move?")) {
         creatures[currentCreatureIndex].moves.splice(i, 1);
         renderMoves();
     }
 }
 
+// ====================== TABLE FUNCTIONS ======================
 function addCustomTable() {
-    const name = prompt("TABLE NAME:");
+    const name = prompt("Table Name:");
     if (!name) return;
-    const sides = parseInt(prompt("HOW MANY ENTRIES?", "8")) || 8;
+    const sides = parseInt(prompt("Number of entries?", "8")) || 8;
     const entries = [];
-    for (let i = 1; i <= Math.min(sides, 20); i++) {
-        entries.push(prompt(`ENTRY ${i}/${sides}:`) || "(empty)");
+    for (let i = 1; i <= sides; i++) {
+        const entry = prompt(`Entry ${i}/${sides}:`) || "(empty)";
+        entries.push(entry);
     }
     customTables.push({name, sides, entries, lastRoll: null});
     renderTables();
 }
 
 function deleteTable(idx) {
-    if (confirm("DELETE TABLE?")) {
+    if (confirm("Delete this table?")) {
         customTables.splice(idx, 1);
         renderTables();
     }
@@ -362,14 +373,15 @@ function deleteTable(idx) {
 
 // ====================== SAVE / LOAD ======================
 function saveEncounter() {
-    localStorage.setItem('rollpad1997', JSON.stringify({creatures, customTables}));
-    alert("ENCOUNTER SAVED");
+    localStorage.setItem('rollpad_modern', JSON.stringify({creatures, customTables}));
+    alert("✅ Encounter saved");
 }
 
 function loadEncounterPrompt() {
-    const data = localStorage.getItem('rollpad1997');
-    if (!data) return alert("NO SAVED ENCOUNTER");
-    if (!confirm("LOAD SAVED ENCOUNTER?")) return;
+    const data = localStorage.getItem('rollpad_modern');
+    if (!data) return alert("No saved encounter found");
+    if (!confirm("Load saved encounter?")) return;
+    
     const parsed = JSON.parse(data);
     creatures = parsed.creatures || [];
     customTables = parsed.customTables || [];
@@ -382,8 +394,6 @@ function importJSON() {
     input.type = 'file';
     input.accept = '.json';
     input.onchange = e => {
-        const file = e.target.files[0];
-        if (!file) return;
         const reader = new FileReader();
         reader.onload = ev => {
             try {
@@ -392,12 +402,12 @@ function importJSON() {
                 customTables = data.customTables || [];
                 currentCreatureIndex = creatures.length ? 0 : -1;
                 updateUI();
-                alert("JSON IMPORTED SUCCESSFULLY");
+                alert("✅ JSON imported successfully");
             } catch(err) {
-                alert("INVALID JSON FILE");
+                alert("Invalid JSON file");
             }
         };
-        reader.readAsText(file);
+        reader.readAsText(e.target.files[0]);
     };
     input.click();
 }
@@ -407,16 +417,16 @@ function exportJSON() {
     const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'rollpad1997.json';
+    a.download = 'rollpad.json';
     a.click();
 }
 
 function clearAllData() {
-    if (confirm("ERASE EVERYTHING?")) {
+    if (confirm("Erase everything?")) {
         creatures = [];
         customTables = [];
         currentCreatureIndex = -1;
-        localStorage.removeItem('rollpad1997');
+        localStorage.removeItem('rollpad_modern');
         updateUI();
     }
 }
@@ -424,10 +434,13 @@ function clearAllData() {
 // ====================== INIT ======================
 updateUI();
 if (creatures.length === 0) {
-    creatures.push({name: "GOBLIN", moves: [
-        {name: "BITE", dice: "1d6+2"},
-        {name: "SCRATCH", dice: "1d4"}
-    ]});
+    creatures.push({
+        name: "GOBLIN", 
+        moves: [
+            {name: "Bite", dice: "1d6+2"},
+            {name: "Scratch", dice: "1d4"}
+        ]
+    });
     currentCreatureIndex = 0;
     updateUI();
 }
